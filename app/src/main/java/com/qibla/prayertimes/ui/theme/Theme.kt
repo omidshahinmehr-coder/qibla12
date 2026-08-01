@@ -9,7 +9,7 @@ import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import com.qibla.prayertimes.R
 
-private val entezarFontFamily = FontFamily(Font(R.font.estedad_regular))
+private val entezarFontFamily = FontFamily(Font(R.font.estedad))
 
 /** The app's default type scale, all mapped onto the Entezar font. */
 private val QiblaTypography: Typography by lazy {
