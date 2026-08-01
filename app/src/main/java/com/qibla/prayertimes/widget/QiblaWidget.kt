@@ -155,13 +155,6 @@ Row(
       Row(
        verticalAlignment = Alignment.Vertical.CenterVertically
       ) {
-        Image(
-           provider = androidx.glance.ImageProvider(R.drawable.ic_location_pin),
-           contentDescription = null,
-           modifier = GlanceModifier.width(12.dp).height(12.dp)
-       )
-       Spacer(modifier = GlanceModifier.width(6.dp))
-           
         Text(
             text = snapshot.cityName,
             style = TextStyle(
@@ -172,6 +165,13 @@ Row(
          ),
          maxLines = 1
         )
+        Spacer(modifier = GlanceModifier.width(4.dp))
+        Image(
+           provider = androidx.glance.ImageProvider(R.drawable.ic_location_pin),
+           contentDescription = null,
+           modifier = GlanceModifier.width(12.dp).height(12.dp)
+       )
+           
     }
     }
 }
