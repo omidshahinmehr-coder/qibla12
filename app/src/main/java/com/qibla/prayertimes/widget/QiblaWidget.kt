@@ -188,17 +188,31 @@ jalaliBlock()
 Spacer(modifier = GlanceModifier.height(2.dp))
 
 // LINE 3 — HIJRI + GREGORIAN
-       Text(
-                text = "${snapshot.hijriText} - $gregorianText", style = TextStyle(color = faintGoldText, fontSize = 15.sp, textAlign = TextAlign.Center),
-                maxLines = 1
-            )
+       Row(
+    modifier = GlanceModifier.fillMaxWidth(),
+    horizontalAlignment = Alignment.CenterHorizontally
+) {
 
-            if (snapshot.isOffline) {
-                Text(
-                    text = langContext.getString(R.string.widget_offline_tag),
-                    style = TextStyle(color = faintGoldText, fontSize = 9.sp, textAlign = TextAlign.Center)
-                )
-            }
+    Box(
+        modifier = GlanceModifier
+            .padding(4.dp)
+    ) {
+        Text(
+            text = snapshot.hijriText,
+            style = TextStyle(color = faintGoldText, fontSize = 15.sp)
+        )
+    }
+
+    Box(
+        modifier = GlanceModifier
+            .padding(4.dp)
+    ) {
+        Text(
+            text = gregorianText,
+            style = TextStyle(color = faintGoldText, fontSize = 15.sp)
+        )
+    }
+}
             Spacer(modifier = GlanceModifier.height(2.dp))
 
 // LINE 4 — COUNTDOWN (CENTERED)
