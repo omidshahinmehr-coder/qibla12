@@ -157,7 +157,7 @@ Row(
            contentDescription = null,
            modifier = GlanceModifier.width(12.dp).height(12.dp)
        )
-       Spacer(modifier = GlanceModifier.width(4.dp))
+       Spacer(modifier = GlanceModifier.width(6.dp))
            
         Text(
             text = snapshot.cityName,
@@ -185,7 +185,7 @@ Spacer(modifier = GlanceModifier.height(2.dp))
 
 // LINE 3 — HIJRI + GREGORIAN
        Text(
-                text = "${snapshot.hijriText} - $gregorianText", style = TextStyle(color = faintGoldText, fontSize = 14.sp, textAlign = TextAlign.Center),
+                text = "${snapshot.hijriText} - $gregorianText", style = TextStyle(color = faintGoldText, fontSize = 15.sp, textAlign = TextAlign.Center),
                 maxLines = 1
             )
 
