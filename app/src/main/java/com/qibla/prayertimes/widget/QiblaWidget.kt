@@ -152,7 +152,10 @@ Row(
         modifier = GlanceModifier.defaultWeight(),
         contentAlignment = Alignment.CenterEnd
     ) {
-      Image(
+      Row(
+       verticalAlignment = Alignment.Vertical.CenterVertically
+      ) {
+        Image(
            provider = androidx.glance.ImageProvider(R.drawable.ic_location_pin),
            contentDescription = null,
            modifier = GlanceModifier.width(12.dp).height(12.dp)
@@ -169,6 +172,7 @@ Row(
          ),
          maxLines = 1
         )
+    }
     }
 }
 Spacer(modifier = GlanceModifier.height(2.dp))
