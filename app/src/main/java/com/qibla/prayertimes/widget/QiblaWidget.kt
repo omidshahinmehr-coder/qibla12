@@ -38,7 +38,7 @@ private val faintGoldText = ColorProvider(Color(0xFFAD8F55))
 
 private val widgetPrayerKeys = listOf("Fajr", "Sunrise", "Dhuhr", "Sunset", "Maghrib", "Midnight")
 private val cellWidth = 70.dp
-private val cellHeight = 55.dp   // ارتفاع ثابت قابل تنظیم
+private val cellHeight = 59.dp   // ارتفاع ثابت قابل تنظیم
 
 private val WEEKDAYS_FA = arrayOf("یکشنبه", "دوشنبه", "سه‌شنبه", "چهارشنبه", "پنجشنبه", "جمعه", "شنبه")
 private val WEEKDAYS_AR = arrayOf("الأحد", "الاثنين", "الثلاثاء", "الأربعاء", "الخميس", "الجمعة", "السبت")
