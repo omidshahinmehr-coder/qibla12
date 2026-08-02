@@ -86,7 +86,7 @@ private fun WidgetContent(langContext: Context, snapshot: WidgetSnapshot?) {
                         ),
                         style = TextStyle(
                             color = goldText,
-                            fontSize = 14.sp,
+                            fontSize = 16.sp,
                             fontWeight = FontWeight.Bold,
                             textAlign = TextAlign.Center
                         ),
@@ -100,7 +100,7 @@ private fun WidgetContent(langContext: Context, snapshot: WidgetSnapshot?) {
                     text = jalaliWithWeekday,
                     style = TextStyle(
                         color = goldText,
-                        fontSize = 14.sp,
+                        fontSize = 16.sp,
                         fontWeight = FontWeight.Bold,
                         textAlign = TextAlign.Center
                     ),
@@ -122,7 +122,7 @@ private fun WidgetContent(langContext: Context, snapshot: WidgetSnapshot?) {
                             text = staticDuration(countdown.second),
                             style = TextStyle(
                                 color = goldText,
-                                fontSize = 15.sp,
+                                fontSize = 16.sp,
                                 fontWeight = FontWeight.Bold,
                                 textAlign = TextAlign.Center
                             )
@@ -190,7 +190,7 @@ private fun WidgetContent(langContext: Context, snapshot: WidgetSnapshot?) {
                     text = snapshot.hijriText,
                     style = TextStyle(
                         color = faintGoldText,
-                        fontSize = 15.sp
+                        fontSize = 16.sp
                     ),
                     modifier = GlanceModifier.padding(4.dp)
                 )
@@ -199,7 +199,7 @@ private fun WidgetContent(langContext: Context, snapshot: WidgetSnapshot?) {
                     text = "-",
                     style = TextStyle(
                         color = faintGoldText,
-                        fontSize = 15.sp
+                        fontSize = 16.sp
                     ),
                     modifier = GlanceModifier.padding(horizontal = 4.dp)
                 )
@@ -208,7 +208,7 @@ private fun WidgetContent(langContext: Context, snapshot: WidgetSnapshot?) {
                     text = gregorianText,
                     style = TextStyle(
                         color = faintGoldText,
-                        fontSize = 15.sp
+                        fontSize = 16.sp
                     ),
                     modifier = GlanceModifier.padding(4.dp)
                 )
@@ -246,7 +246,7 @@ private fun WidgetContent(langContext: Context, snapshot: WidgetSnapshot?) {
                 text = langContext.getString(R.string.widget_updating),
                 style = TextStyle(
                     color = goldText,
-                    fontSize = 13.sp,
+                    fontSize = 15.sp,
                     textAlign = TextAlign.Center
                 )
             )
