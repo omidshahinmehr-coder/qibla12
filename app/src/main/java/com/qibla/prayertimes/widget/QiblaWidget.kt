@@ -262,8 +262,50 @@ private fun WidgetContent(langContext: Context, snapshot: WidgetSnapshot?) {
         }
     }
 }
+//////////////
+//private val cellWidth = 56.dp   // کاهش عرض سلول‌ها
 
 @Composable
+private fun PrayerCell(label: String, time: String) {
+    Column(
+        modifier = GlanceModifier
+            .width(cellWidth)
+            .background(cellBorderColor)
+            .cornerRadius(10.dp)
+            .padding(0.8.dp)
+    ) {
+        Column(
+            modifier = GlanceModifier
+                .fillMaxWidth()
+                .background(cellFillColor)
+                .cornerRadius(8.dp)
+                .padding(horizontal = 2.dp, vertical = 4.dp),
+            horizontalAlignment = Alignment.Horizontal.CenterHorizontally
+        ) {
+            Text(
+                text = label,
+                style = TextStyle(
+                    color = goldText,
+                    fontSize = 11.sp,
+                    fontWeight = FontWeight.Bold,
+                    textAlign = TextAlign.Center
+                )
+            )
+            Spacer(modifier = GlanceModifier.height(1.dp))
+            Text(
+                text = time,
+                style = TextStyle(
+                    color = goldText,
+                    fontSize = 15.sp,
+                    fontWeight = FontWeight.Bold,
+                    textAlign = TextAlign.Center
+                )
+            )
+        }
+    }
+}
+//////////////
+/*@Composable
 private fun PrayerCell(label: String, time: String) {
     Column(
         modifier = GlanceModifier
@@ -302,7 +344,7 @@ private fun PrayerCell(label: String, time: String) {
         }
     }
 }
-
+*/
 private fun weekdayName(language: String): String {
     val dow = Calendar.getInstance().get(Calendar.DAY_OF_WEEK)
     return when (language) {
