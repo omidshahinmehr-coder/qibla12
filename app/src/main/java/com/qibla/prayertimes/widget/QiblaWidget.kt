@@ -89,7 +89,7 @@ private fun WidgetContent(langContext: Context, snapshot: WidgetSnapshot?) {
                             fontSize = 14.sp,
                             fontWeight = FontWeight.Bold,
                             textAlign = TextAlign.Center,
-                            fontFamily = FontFamily(R.font.estedad_regular)
+                            fontFamily = "estedad_regular"
                         ),
                         maxLines = 1
                     )
@@ -104,7 +104,7 @@ private fun WidgetContent(langContext: Context, snapshot: WidgetSnapshot?) {
                         fontSize = 14.sp,
                         fontWeight = FontWeight.Bold,
                         textAlign = TextAlign.Center,
-                        fontFamily = FontFamily(R.font.estedad_regular)
+                        fontFamily = "estedad_regular"
                     ),
                     maxLines = 1
                 )
@@ -127,7 +127,7 @@ private fun WidgetContent(langContext: Context, snapshot: WidgetSnapshot?) {
                                 fontSize = 15.sp,
                                 fontWeight = FontWeight.Bold,
                                 textAlign = TextAlign.Center,
-                                fontFamily = FontFamily(R.font.estedad_regular)
+                                fontFamily = "estedad_regular"
                             )
                         )
                     }
@@ -160,7 +160,7 @@ private fun WidgetContent(langContext: Context, snapshot: WidgetSnapshot?) {
                                 fontSize = 16.sp,
                                 fontWeight = FontWeight.Bold,
                                 textAlign = TextAlign.End,
-                                fontFamily = FontFamily(R.font.estedad_regular)
+                                fontFamily = "estedad_regular"
                             ),
                             maxLines = 1
                         )
@@ -195,7 +195,7 @@ private fun WidgetContent(langContext: Context, snapshot: WidgetSnapshot?) {
                     style = TextStyle(
                         color = faintGoldText,
                         fontSize = 15.sp,
-                        fontFamily = FontFamily(R.font.estedad_regular)
+                        fontFamily = "estedad_regular"
                     ),
                     modifier = GlanceModifier.padding(4.dp)
                 )
@@ -205,7 +205,7 @@ private fun WidgetContent(langContext: Context, snapshot: WidgetSnapshot?) {
                     style = TextStyle(
                         color = faintGoldText,
                         fontSize = 15.sp,
-                        fontFamily = FontFamily(R.font.estedad_regular)
+                        fontFamily = "estedad_regular"
                     ),
                     modifier = GlanceModifier.padding(horizontal = 4.dp)
                 )
@@ -215,7 +215,7 @@ private fun WidgetContent(langContext: Context, snapshot: WidgetSnapshot?) {
                     style = TextStyle(
                         color = faintGoldText,
                         fontSize = 15.sp,
-                        fontFamily = FontFamily(R.font.estedad_regular)
+                        fontFamily = "estedad_regular"
                     ),
                     modifier = GlanceModifier.padding(4.dp)
                 )
@@ -255,7 +255,7 @@ private fun WidgetContent(langContext: Context, snapshot: WidgetSnapshot?) {
                     color = goldText,
                     fontSize = 13.sp,
                     textAlign = TextAlign.Center,
-                    fontFamily = FontFamily(R.font.estedad_regular)
+                    fontFamily = "estedad_regular"
                 )
             )
             Spacer(modifier = GlanceModifier.height(6.dp))
@@ -265,7 +265,7 @@ private fun WidgetContent(langContext: Context, snapshot: WidgetSnapshot?) {
                     color = faintGoldText,
                     fontSize = 11.sp,
                     textAlign = TextAlign.Center,
-                    fontFamily = FontFamily(R.font.estedad_regular)
+                    fontFamily = "estedad_regular"
                 )
             )
         }
@@ -296,7 +296,7 @@ private fun PrayerCell(label: String, time: String) {
                     fontSize = 10.sp,
                     fontWeight = FontWeight.Bold,
                     textAlign = TextAlign.Center,
-                    fontFamily = FontFamily(R.font.estedad_regular)
+                    fontFamily = "estedad_regular"
                 )
             )
             Spacer(modifier = GlanceModifier.height(2.dp))
@@ -307,7 +307,7 @@ private fun PrayerCell(label: String, time: String) {
                     fontSize = 14.sp,
                     fontWeight = FontWeight.Bold,
                     textAlign = TextAlign.Center,
-                    fontFamily = FontFamily(R.font.estedad_regular)
+                    fontFamily = "estedad_regular"
                 )
             )
         }
