@@ -88,7 +88,8 @@ private fun WidgetContent(langContext: Context, snapshot: WidgetSnapshot?) {
                             color = goldText,
                             fontSize = 14.sp,
                             fontWeight = FontWeight.Bold,
-                            textAlign = TextAlign.Center
+                            textAlign = TextAlign.Center,
+                            fontFamily = FontFamily(R.font.estedad_regular)
                         ),
                         maxLines = 1
                     )
@@ -102,7 +103,8 @@ private fun WidgetContent(langContext: Context, snapshot: WidgetSnapshot?) {
                         color = goldText,
                         fontSize = 14.sp,
                         fontWeight = FontWeight.Bold,
-                        textAlign = TextAlign.Center
+                        textAlign = TextAlign.Center,
+                        fontFamily = FontFamily(R.font.estedad_regular)
                     ),
                     maxLines = 1
                 )
@@ -124,7 +126,8 @@ private fun WidgetContent(langContext: Context, snapshot: WidgetSnapshot?) {
                                 color = goldText,
                                 fontSize = 15.sp,
                                 fontWeight = FontWeight.Bold,
-                                textAlign = TextAlign.Center
+                                textAlign = TextAlign.Center,
+                                fontFamily = FontFamily(R.font.estedad_regular)
                             )
                         )
                     }
@@ -156,7 +159,8 @@ private fun WidgetContent(langContext: Context, snapshot: WidgetSnapshot?) {
                                 color = goldText,
                                 fontSize = 16.sp,
                                 fontWeight = FontWeight.Bold,
-                                textAlign = TextAlign.End
+                                textAlign = TextAlign.End,
+                                fontFamily = FontFamily(R.font.estedad_regular)
                             ),
                             maxLines = 1
                         )
@@ -190,7 +194,8 @@ private fun WidgetContent(langContext: Context, snapshot: WidgetSnapshot?) {
                     text = snapshot.hijriText,
                     style = TextStyle(
                         color = faintGoldText,
-                        fontSize = 15.sp
+                        fontSize = 15.sp,
+                        fontFamily = FontFamily(R.font.estedad_regular)
                     ),
                     modifier = GlanceModifier.padding(4.dp)
                 )
@@ -199,7 +204,8 @@ private fun WidgetContent(langContext: Context, snapshot: WidgetSnapshot?) {
                     text = "-",
                     style = TextStyle(
                         color = faintGoldText,
-                        fontSize = 15.sp
+                        fontSize = 15.sp,
+                        fontFamily = FontFamily(R.font.estedad_regular)
                     ),
                     modifier = GlanceModifier.padding(horizontal = 4.dp)
                 )
@@ -208,7 +214,8 @@ private fun WidgetContent(langContext: Context, snapshot: WidgetSnapshot?) {
                     text = gregorianText,
                     style = TextStyle(
                         color = faintGoldText,
-                        fontSize = 15.sp
+                        fontSize = 15.sp,
+                        fontFamily = FontFamily(R.font.estedad_regular)
                     ),
                     modifier = GlanceModifier.padding(4.dp)
                 )
@@ -247,7 +254,8 @@ private fun WidgetContent(langContext: Context, snapshot: WidgetSnapshot?) {
                 style = TextStyle(
                     color = goldText,
                     fontSize = 13.sp,
-                    textAlign = TextAlign.Center
+                    textAlign = TextAlign.Center,
+                    fontFamily = FontFamily(R.font.estedad_regular)
                 )
             )
             Spacer(modifier = GlanceModifier.height(6.dp))
@@ -256,7 +264,8 @@ private fun WidgetContent(langContext: Context, snapshot: WidgetSnapshot?) {
                 style = TextStyle(
                     color = faintGoldText,
                     fontSize = 11.sp,
-                    textAlign = TextAlign.Center
+                    textAlign = TextAlign.Center,
+                    fontFamily = FontFamily(R.font.estedad_regular)
                 )
             )
         }
@@ -286,7 +295,8 @@ private fun PrayerCell(label: String, time: String) {
                     color = goldText,
                     fontSize = 10.sp,
                     fontWeight = FontWeight.Bold,
-                    textAlign = TextAlign.Center
+                    textAlign = TextAlign.Center,
+                    fontFamily = FontFamily(R.font.estedad_regular)
                 )
             )
             Spacer(modifier = GlanceModifier.height(2.dp))
@@ -296,7 +306,8 @@ private fun PrayerCell(label: String, time: String) {
                     color = goldText,
                     fontSize = 14.sp,
                     fontWeight = FontWeight.Bold,
-                    textAlign = TextAlign.Center
+                    textAlign = TextAlign.Center,
+                    fontFamily = FontFamily(R.font.estedad_regular)
                 )
             )
         }
