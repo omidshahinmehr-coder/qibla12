@@ -38,6 +38,7 @@ private val faintGoldText = ColorProvider(Color(0xFFAD8F55))
 
 private val widgetPrayerKeys = listOf("Fajr", "Sunrise", "Dhuhr", "Sunset", "Maghrib", "Midnight")
 private val cellWidth = 70.dp
+private val cellHeight = 52.dp   // ارتفاع ثابت قابل تنظیم
 
 private val WEEKDAYS_FA = arrayOf("یکشنبه", "دوشنبه", "سه‌شنبه", "چهارشنبه", "پنجشنبه", "جمعه", "شنبه")
 private val WEEKDAYS_AR = arrayOf("الأحد", "الاثنين", "الثلاثاء", "الأربعاء", "الخميس", "الجمعة", "السبت")
@@ -277,6 +278,7 @@ private fun PrayerCell(label: String, time: String) {
         Column(
             modifier = GlanceModifier
                 .fillMaxWidth()
+                .height(cellHeight)
                 .background(cellFillColor)
                 .cornerRadius(8.dp)
                 .padding(horizontal = 2.dp, vertical = 4.dp),
