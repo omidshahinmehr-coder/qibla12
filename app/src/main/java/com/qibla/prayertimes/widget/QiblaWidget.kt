@@ -33,10 +33,8 @@ import java.util.*
 private val bgColor = ColorProvider(Color(0xFFF3ECDD))
 private val cellBorderColor = ColorProvider(Color(0xFFD9C8A0))
 private val cellFillColor = ColorProvider(Color(0xFFFBF6EA))
-
-// رنگ‌های جدید
-private val goldText = ColorProvider(Color(0xFF6F5525))      // طلایی تیره‌تر
-private val faintGoldText = ColorProvider(Color(0xFF222222)) // مشکی ملایم
+private val goldText = ColorProvider(Color(0xFF8A6A2E))
+private val faintGoldText = ColorProvider(Color(0xFFAD8F55))
 
 private val widgetPrayerKeys = listOf("Fajr", "Sunrise", "Dhuhr", "Sunset", "Maghrib", "Midnight")
 private val cellWidth = 70.dp
@@ -264,8 +262,50 @@ private fun WidgetContent(langContext: Context, snapshot: WidgetSnapshot?) {
         }
     }
 }
+//////////////
+//private val cellWidth = 56.dp   // کاهش عرض سلول‌ها
 
 @Composable
+private fun PrayerCell(label: String, time: String) {
+    Column(
+        modifier = GlanceModifier
+            .width(cellWidth)
+            .background(cellBorderColor)
+            .cornerRadius(10.dp)
+            .padding(0.8.dp)
+    ) {
+        Column(
+            modifier = GlanceModifier
+                .fillMaxWidth()
+                .background(cellFillColor)
+                .cornerRadius(8.dp)
+                .padding(horizontal = 2.dp, vertical = 4.dp),
+            horizontalAlignment = Alignment.Horizontal.CenterHorizontally
+        ) {
+            Text(
+                text = label,
+                style = TextStyle(
+                    color = goldText,
+                    fontSize = 11.sp,
+                    fontWeight = FontWeight.Bold,
+                    textAlign = TextAlign.Center
+                )
+            )
+            Spacer(modifier = GlanceModifier.height(1.dp))
+            Text(
+                text = time,
+                style = TextStyle(
+                    color = goldText,
+                    fontSize = 15.sp,
+                    fontWeight = FontWeight.Bold,
+                    textAlign = TextAlign.Center
+                )
+            )
+        }
+    }
+}
+//////////////
+/*@Composable
 private fun PrayerCell(label: String, time: String) {
     Column(
         modifier = GlanceModifier
@@ -285,7 +325,7 @@ private fun PrayerCell(label: String, time: String) {
             Text(
                 text = label,
                 style = TextStyle(
-                    color = goldText,   // عنوان‌ها طلایی تیره‌تر
+                    color = goldText,
                     fontSize = 10.sp,
                     fontWeight = FontWeight.Bold,
                     textAlign = TextAlign.Center
@@ -295,7 +335,7 @@ private fun PrayerCell(label: String, time: String) {
             Text(
                 text = time,
                 style = TextStyle(
-                    color = ColorProvider(Color(0xFF222222)),   // زمان‌ها مشکی ملایم
+                    color = goldText,
                     fontSize = 14.sp,
                     fontWeight = FontWeight.Bold,
                     textAlign = TextAlign.Center
@@ -303,4 +343,68 @@ private fun PrayerCell(label: String, time: String) {
             )
         }
     }
+}
+*/
+private fun weekdayName(language: String): String {
+    val dow = Calendar.getInstance().get(Calendar.DAY_OF_WEEK)
+    return when (language) {
+        "fa" -> WEEKDAYS_FA[dow - 1]
+        "ar" -> WEEKDAYS_AR[dow - 1]
+        else -> SimpleDateFormat("EEEE", Locale.ENGLISH).format(Calendar.getInstance().time)
+    }
+}
+
+private fun formatGregorian(context: Context, dateKey: String): String {
+    return try {
+        val parts = dateKey.split("-").map { it.toInt() }
+        val cal = Calendar.getInstance().apply { set(parts[0], parts[1] - 1, parts[2]) }
+        SimpleDateFormat("dd MMMM yyyy", context.resources.configuration.locales[0]).format(cal.time)
+    } catch (e: Exception) {
+        dateKey
+    }
+}
+
+private fun staticDuration(targetMillis: Long): String {
+    val diff = (targetMillis - System.currentTimeMillis()).coerceAtLeast(0) / 1000
+    val h = diff / 3600
+    val m = (diff % 3600) / 60
+    val s = diff % 60
+    return "%02d:%02d:%02d".format(h, m, s)
+}
+
+private fun nextPrayerCountdown(timings: Map<String, String>): Pair<String, Long>? {
+    val order = listOf("Fajr", "Dhuhr", "Asr", "Maghrib", "Isha")
+    val now = Calendar.getInstance()
+    val sdf = SimpleDateFormat("HH:mm", Locale.US)
+
+    fun toCalendar(hhmm: String): Calendar? {
+        val parsed = try { sdf.parse(hhmm) } catch (e: Exception) { null } ?: return null
+        val parsedCal = Calendar.getInstance().apply { time = parsed }
+        return Calendar.getInstance().apply {
+            set(Calendar.HOUR_OF_DAY, parsedCal.get(Calendar.HOUR_OF_DAY))
+            set(Calendar.MINUTE, parsedCal.get(Calendar.MINUTE))
+            set(Calendar.SECOND, 0)
+            set(Calendar.MILLISECOND, 0)
+        }
+    }
+
+    var bestKey: String? = null
+    var bestCal: Calendar? = null
+    for (key in order) {
+        val timeStr = timings[key] ?: continue
+        val cal = toCalendar(timeStr) ?: continue
+        if (cal.after(now) && (bestCal == null || cal.before(bestCal))) {
+            bestKey = key
+            bestCal = cal
+        }
+    }
+    if (bestKey == null) {
+        val fajrStr = timings["Fajr"] ?: return null
+        val cal = toCalendar(fajrStr) ?: return null
+        cal.add(Calendar.DAY_OF_YEAR, 1)
+        bestKey = "Fajr"
+        bestCal = cal
+    }
+    val target = bestCal ?: return null
+    return bestKey to target.timeInMillis
 }
