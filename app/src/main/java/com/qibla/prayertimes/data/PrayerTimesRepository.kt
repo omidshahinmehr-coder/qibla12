@@ -12,6 +12,7 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 import java.util.concurrent.TimeUnit
+import android.os.Build
 
 /** [monthAr] is used for both Arabic and Persian locales (they share Hijri month names); [monthEn] for English. */
 data class HijriDate(val day: String, val monthAr: String, val monthEn: String, val year: String) {
