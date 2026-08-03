@@ -29,7 +29,6 @@ import com.qibla.prayertimes.data.prayerLabels
 import com.qibla.prayertimes.util.LocalePrefs
 import java.text.SimpleDateFormat
 import java.util.*
-import android.os.Build
 
 private val bgColor = ColorProvider(Color(0xFFF3ECDD))
 private val cellBorderColor = ColorProvider(Color(0xFFD9C8A0))
