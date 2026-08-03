@@ -70,15 +70,7 @@
                 android:resource="@xml/qibla_widget_info" />
         </receiver>
 
-        <!-- Refresh widget countdown without opening the app -->
-        <receiver
-            android:name=".widget.RefreshReceiver"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="REFRESH_QIBLA_WIDGET" />
-            </intent-filter>
-        </receiver>
-
+        
     </application>
 
 </manifest>
