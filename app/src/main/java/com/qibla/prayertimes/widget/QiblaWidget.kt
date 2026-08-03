@@ -29,6 +29,7 @@ import com.qibla.prayertimes.data.prayerLabels
 import com.qibla.prayertimes.util.LocalePrefs
 import java.text.SimpleDateFormat
 import java.util.*
+import android.os.Build
 
 private val bgColor = ColorProvider(Color(0xFFF3ECDD))
 private val cellBorderColor = ColorProvider(Color(0xFFD9C8A0))
@@ -38,7 +39,7 @@ private val faintGoldText = ColorProvider(Color(0xFFAD8F55))
 
 private val widgetPrayerKeys = listOf("Fajr", "Sunrise", "Dhuhr", "Sunset", "Maghrib", "Midnight")
 private val cellWidth = 70.dp
-private val cellHeight = 59.dp   // ارتفاع ثابت قابل تنظیم
+private val cellHeight = 59.dp
 
 private val WEEKDAYS_FA = arrayOf("یکشنبه", "دوشنبه", "سه‌شنبه", "چهارشنبه", "پنجشنبه", "جمعه", "شنبه")
 private val WEEKDAYS_AR = arrayOf("الأحد", "الاثنين", "الثلاثاء", "الأربعاء", "الخميس", "الجمعة", "السبت")
@@ -55,8 +56,16 @@ class QiblaWidget : GlanceAppWidget() {
 
 @Composable
 private fun WidgetContent(langContext: Context, snapshot: WidgetSnapshot?) {
+
+    // 🔧 اصلاح سازگار با Android 5
+    val config = langContext.resources.configuration
+    val language =
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
+            config.locales[0].language
+        else
+            config.locale.language
+
     val labels = prayerLabels(langContext)
-    val language = langContext.resources.configuration.locales[0].language
 
     Column(
         modifier = GlanceModifier
@@ -263,8 +272,6 @@ private fun WidgetContent(langContext: Context, snapshot: WidgetSnapshot?) {
         }
     }
 }
-//////////////
-//private val cellWidth = 56.dp   // کاهش عرض سلول‌ها
 
 @Composable
 private fun PrayerCell(label: String, time: String) {
@@ -306,47 +313,7 @@ private fun PrayerCell(label: String, time: String) {
         }
     }
 }
-//////////////
-/*@Composable
-private fun PrayerCell(label: String, time: String) {
-    Column(
-        modifier = GlanceModifier
-            .width(cellWidth)
-            .background(cellBorderColor)
-            .cornerRadius(16.dp)
-            .padding(1.2.dp)
-    ) {
-        Column(
-            modifier = GlanceModifier
-                .fillMaxWidth()
-                .background(cellFillColor)
-                .cornerRadius(15.dp)
-                .padding(horizontal = 4.dp, vertical = 6.dp),
-            horizontalAlignment = Alignment.Horizontal.CenterHorizontally
-        ) {
-            Text(
-                text = label,
-                style = TextStyle(
-                    color = goldText,
-                    fontSize = 10.sp,
-                    fontWeight = FontWeight.Bold,
-                    textAlign = TextAlign.Center
-                )
-            )
-            Spacer(modifier = GlanceModifier.height(2.dp))
-            Text(
-                text = time,
-                style = TextStyle(
-                    color = goldText,
-                    fontSize = 14.sp,
-                    fontWeight = FontWeight.Bold,
-                    textAlign = TextAlign.Center
-                )
-            )
-        }
-    }
-}
-*/
+
 private fun weekdayName(language: String): String {
     val dow = Calendar.getInstance().get(Calendar.DAY_OF_WEEK)
     return when (language) {
@@ -360,7 +327,16 @@ private fun formatGregorian(context: Context, dateKey: String): String {
     return try {
         val parts = dateKey.split("-").map { it.toInt() }
         val cal = Calendar.getInstance().apply { set(parts[0], parts[1] - 1, parts[2]) }
-        SimpleDateFormat("dd MMMM yyyy", context.resources.configuration.locales[0]).format(cal.time)
+
+        // 🔧 اصلاح سازگار با Android 5
+        val config = context.resources.configuration
+        val locale =
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
+                config.locales[0]
+            else
+                config.locale
+
+        SimpleDateFormat("dd MMMM yyyy", locale).format(cal.time)
     } catch (e: Exception) {
         dateKey
     }
