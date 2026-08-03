@@ -1,6 +1,7 @@
 package com.qibla.prayertimes.widget
 
 import android.content.Context
+import android.content.Intent
 import android.os.Build
 import android.os.SystemClock
 import android.widget.RemoteViews
@@ -13,6 +14,7 @@ import androidx.glance.GlanceId
 import androidx.glance.GlanceModifier
 import androidx.glance.action.actionStartActivity
 import androidx.glance.action.clickable
+import androidx.glance.action.actionSendBroadcast
 import androidx.glance.appwidget.AndroidRemoteViews
 import androidx.glance.appwidget.GlanceAppWidget
 import androidx.glance.appwidget.cornerRadius
@@ -116,7 +118,7 @@ private fun WidgetContent(langContext: Context, snapshot: WidgetSnapshot?) {
                 )
             }
 
-            // ⭐ تایمر کلیک‌پذیر روی Android 5
+            // ⭐ تایمر کلیک‌پذیر بدون باز شدن برنامه (رفرش واقعی)
             val timerBlock: @Composable () -> Unit = {
                 if (countdown != null) {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
@@ -136,7 +138,9 @@ private fun WidgetContent(langContext: Context, snapshot: WidgetSnapshot?) {
                                 textAlign = TextAlign.Center
                             ),
                             modifier = GlanceModifier.clickable(
-                                actionStartActivity<MainActivity>()  // ← رفرش با کلیک
+                                actionSendBroadcast(
+                                    Intent("REFRESH_QIBLA_WIDGET")
+                                )
                             )
                         )
                     }
