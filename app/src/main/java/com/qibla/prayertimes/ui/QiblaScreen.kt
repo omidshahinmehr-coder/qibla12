@@ -1,5 +1,6 @@
 package com.qibla.prayertimes.ui
 
+import android.os.Build
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -37,12 +38,9 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
-// The salawat formula is always recited in Arabic regardless of the app's UI language, so it
-// is intentionally not routed through strings.xml (which would risk it being translated).
 private const val SALAWAT_TEXT =
     "اَللّهُمَّ صَلِّ عَلَی مُحَمَّدِِ وَ آلِ مُحَمَّد وَ عَجِّل فَرَجَهُم وَ العَن اَعدائَهُم اَجمعین"
 
-// The "Entezar" font, used for the salawat text.
 private val salawatFontFamily = FontFamily(Font(R.font.entezar))
 
 private val HOME_PRAYER_KEYS = listOf("Fajr", "Sunrise", "Dhuhr", "Sunset", "Maghrib", "Midnight")
@@ -78,7 +76,7 @@ fun QiblaScreen(
                 .padding(horizontal = if (isCompact) 14.dp else 20.dp)
                 .padding(top = 20.dp, bottom = 32.dp)
         ) {
-            // Top bar: city (with pin, opens city picker) on one side, menu on the other.
+
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
@@ -102,7 +100,6 @@ fun QiblaScreen(
 
             Spacer(Modifier.height(18.dp))
 
-            // Salawat
             Text(
                 text = SALAWAT_TEXT,
                 color = AmberText,
@@ -116,18 +113,26 @@ fun QiblaScreen(
 
             Spacer(Modifier.height(16.dp))
 
-            // Gregorian + Jalali + Hijri date, all three always shown together.
             val gregorianText = remember { SimpleDateFormat("d MMMM yyyy", Locale.ENGLISH).format(Date()) }
             val jalaliText = remember { JalaliCalendar.today().toString() }
+
             val hijriApproxText = remember {
                 val h = HijriCalendar.today()
-                val language = context.resources.configuration.locales[0].language
+                val config = context.resources.configuration
+                val language = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                    config.locales[0].language
+                } else {
+                    config.locale.language
+                }
                 val monthName = if (language == "ar" || language == "fa") h.monthNameAr else h.monthNameEn
-                "${h.day} $monthName ${h.year}"
+                "$monthName ${h.year}"
             }
+
             val hijriFromApi = (prayerState as? PrayerTimesState.Success)?.result?.hijri
             val eraSuffix = stringResource(R.string.hijri_era_suffix)
-            val hijriText = hijriFromApi?.let { "${it.day} ${it.monthName(context)} ${it.year}$eraSuffix" } ?: hijriApproxText
+            val hijriText = hijriFromApi?.let {
+                "${it.day} ${it.monthName} ${it.year}$eraSuffix"
+            } ?: hijriApproxText
 
             Column(
                 modifier = Modifier
@@ -147,7 +152,6 @@ fun QiblaScreen(
 
             Spacer(Modifier.height(18.dp))
 
-            // Prayer times (Fajr, Sunrise, Dhuhr, Sunset, Maghrib, Midnight)
             val timings = (prayerState as? PrayerTimesState.Success)?.result?.timings
             when {
                 prayerState is PrayerTimesState.Loading -> Box(
@@ -156,6 +160,7 @@ fun QiblaScreen(
                 ) {
                     CircularProgressIndicator(color = Brass, strokeWidth = 2.dp, modifier = Modifier.size(20.dp))
                 }
+
                 timings != null -> {
                     val rows = HOME_PRAYER_KEYS.chunked(3)
                     Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
@@ -188,13 +193,12 @@ fun QiblaScreen(
 
             Spacer(Modifier.height(28.dp))
 
-            // Compass, at the very bottom, with nothing after it.
             val bearing = viewModel.bearing.toFloat()
             val deviceHeading = com.qibla.prayertimes.sensor.rememberDeviceHeading()
             val needleAngle = if (deviceHeading != null) (bearing - deviceHeading + 360f) % 360f else bearing
             val dialRotation = if (deviceHeading != null) (360f - deviceHeading) % 360f else 0f
-            val isAlignedWithQibla = deviceHeading != null &&
-                minOf(needleAngle, 360f - needleAngle) < 6f
+            val isAlignedWithQibla = deviceHeading != null && minOf(needleAngle, 360f - needleAngle) < 6f
+
             Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
                 CompassDial(
                     bearingDegrees = needleAngle,
@@ -209,6 +213,7 @@ fun QiblaScreen(
                     isAligned = isAlignedWithQibla
                 )
             }
+
             Spacer(Modifier.height(8.dp))
             Text(
                 stringResource(R.string.compass_distance, viewModel.distanceKm),
@@ -233,8 +238,7 @@ fun QiblaScreen(
 
             Spacer(Modifier.height(16.dp))
 
-            // Manual refresh — always pinned to the literal left edge, regardless of RTL/LTR.
-            androidx.compose.runtime.CompositionLocalProvider(
+            CompositionLocalProvider(
                 androidx.compose.ui.platform.LocalLayoutDirection provides androidx.compose.ui.unit.LayoutDirection.Ltr
             ) {
                 Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Start) {
