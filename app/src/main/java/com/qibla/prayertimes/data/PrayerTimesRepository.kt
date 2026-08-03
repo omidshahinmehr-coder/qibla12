@@ -15,17 +15,22 @@ import java.util.concurrent.TimeUnit
 import android.os.Build
 
 /** [monthAr] is used for both Arabic and Persian locales (they share Hijri month names); [monthEn] for English. */
-data class HijriDate(val day: String, val monthAr: String, val monthEn: String, val year: String) {
-  
-fun monthName(context: Context): String =
-            val config = context.resources.configuration
-               val language = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                    config.locales[0].language
-               } else {
-                    config.locale.language
-               }
-     return if  (language == "en") monthEn else monthAr     
-//if (context.resources.configuration.locales[0].language == "en") monthEn else monthAr
+data class HijriDate(
+    val day: String,
+    val monthAr: String,
+    val monthEn: String,
+    val year: String
+) {
+    fun monthName(context: Context): String {
+        val config = context.resources.configuration
+        val language =
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+                config.locales[0].language
+            } else {
+                config.locale.language
+            }
+        return if (language == "en") monthEn else monthAr
+    }
 }
 
 data class PrayerTimesResult(
