@@ -12,13 +12,19 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Refresh
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.Font
@@ -76,7 +82,6 @@ fun QiblaScreen(
                 .padding(horizontal = if (isCompact) 14.dp else 20.dp)
                 .padding(top = 20.dp, bottom = 32.dp)
         ) {
-
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
@@ -89,12 +94,26 @@ fun QiblaScreen(
                         .padding(horizontal = 8.dp, vertical = 6.dp),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Icon(Icons.Filled.LocationOn, contentDescription = null, tint = BrassLight, modifier = Modifier.size(16.dp))
+                    Icon(
+                        Icons.Filled.LocationOn,
+                        contentDescription = null,
+                        tint = BrassLight,
+                        modifier = Modifier.size(16.dp)
+                    )
                     Spacer(Modifier.width(6.dp))
-                    Text(selected.name, color = AmberText, fontWeight = FontWeight.Bold, fontSize = 15.sp)
+                    Text(
+                        selected.name,
+                        color = AmberText,
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 15.sp
+                    )
                 }
                 IconButton(onClick = onOpenMenu) {
-                    Icon(Icons.Filled.Menu, contentDescription = stringResource(R.string.menu), tint = AmberMuted)
+                    Icon(
+                        Icons.Filled.Menu,
+                        contentDescription = stringResource(R.string.menu),
+                        tint = AmberMuted
+                    )
                 }
             }
 
@@ -108,12 +127,15 @@ fun QiblaScreen(
                 fontWeight = FontWeight.Medium,
                 textAlign = TextAlign.Center,
                 lineHeight = if (isCompact) 24.sp else 27.sp,
-                modifier = Modifier.fillMaxWidth().padding(horizontal = 4.dp)
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 4.dp)
             )
 
             Spacer(Modifier.height(16.dp))
 
-            val gregorianText = remember { SimpleDateFormat("d MMMM yyyy", Locale.ENGLISH).format(Date()) }
+            val gregorianText =
+                remember { SimpleDateFormat("d MMMM yyyy", Locale.ENGLISH).format(Date()) }
             val jalaliText = remember { JalaliCalendar.today().toString() }
 
             val hijriApproxText = remember {
@@ -124,7 +146,8 @@ fun QiblaScreen(
                 } else {
                     config.locale.language
                 }
-                val monthName = if (language == "ar" || language == "fa") h.monthNameAr else h.monthNameEn
+                val monthName =
+                    if (language == "ar" || language == "fa") h.monthNameAr else h.monthNameEn
                 "$monthName ${h.year}"
             }
 
@@ -155,17 +178,26 @@ fun QiblaScreen(
             val timings = (prayerState as? PrayerTimesState.Success)?.result?.timings
             when {
                 prayerState is PrayerTimesState.Loading -> Box(
-                    modifier = Modifier.fillMaxWidth().padding(vertical = 20.dp),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 20.dp),
                     contentAlignment = Alignment.Center
                 ) {
-                    CircularProgressIndicator(color = Brass, strokeWidth = 2.dp, modifier = Modifier.size(20.dp))
+                    CircularProgressIndicator(
+                        color = Brass,
+                        strokeWidth = 2.dp,
+                        modifier = Modifier.size(20.dp)
+                    )
                 }
 
                 timings != null -> {
                     val rows = HOME_PRAYER_KEYS.chunked(3)
                     Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
                         rows.forEach { rowKeys ->
-                            Row(horizontalArrangement = Arrangement.spacedBy(10.dp), modifier = Modifier.fillMaxWidth()) {
+                            Row(
+                                horizontalArrangement = Arrangement.spacedBy(10.dp),
+                                modifier = Modifier.fillMaxWidth()
+                            ) {
                                 rowKeys.forEach { key ->
                                     Column(
                                         modifier = Modifier
@@ -175,7 +207,12 @@ fun QiblaScreen(
                                             .padding(horizontal = 8.dp, vertical = 10.dp),
                                         horizontalAlignment = Alignment.CenterHorizontally
                                     ) {
-                                        Text(labels[key] ?: key, color = AmberMuted, fontSize = 10.sp, textAlign = TextAlign.Center)
+                                        Text(
+                                            labels[key] ?: key,
+                                            color = AmberMuted,
+                                            fontSize = 10.sp,
+                                            textAlign = TextAlign.Center
+                                        )
                                         Text(
                                             timings[key] ?: "--:--",
                                             color = AmberText,
@@ -195,11 +232,17 @@ fun QiblaScreen(
 
             val bearing = viewModel.bearing.toFloat()
             val deviceHeading = com.qibla.prayertimes.sensor.rememberDeviceHeading()
-            val needleAngle = if (deviceHeading != null) (bearing - deviceHeading + 360f) % 360f else bearing
-            val dialRotation = if (deviceHeading != null) (360f - deviceHeading) % 360f else 0f
-            val isAlignedWithQibla = deviceHeading != null && minOf(needleAngle, 360f - needleAngle) < 6f
+            val needleAngle =
+                if (deviceHeading != null) (bearing - deviceHeading + 360f) % 360f else bearing
+            val dialRotation =
+                if (deviceHeading != null) (360f - deviceHeading) % 360f else 0f
+            val isAlignedWithQibla = deviceHeading != null &&
+                    minOf(needleAngle, 360f - needleAngle) < 6f
 
-            Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
+            Box(
+                modifier = Modifier.fillMaxWidth(),
+                contentAlignment = Alignment.Center
+            ) {
                 CompassDial(
                     bearingDegrees = needleAngle,
                     dialSize = dialSize,
@@ -232,18 +275,28 @@ fun QiblaScreen(
                     fontSize = 11.sp,
                     lineHeight = 16.sp,
                     textAlign = TextAlign.Center,
-                    modifier = Modifier.fillMaxWidth().padding(horizontal = 4.dp)
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 4.dp)
                 )
             }
 
             Spacer(Modifier.height(16.dp))
 
             CompositionLocalProvider(
-                androidx.compose.ui.platform.LocalLayoutDirection provides androidx.compose.ui.unit.LayoutDirection.Ltr
+                androidx.compose.ui.platform.LocalLayoutDirection provides
+                        androidx.compose.ui.unit.LayoutDirection.Ltr
             ) {
-                Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Start) {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.Start
+                ) {
                     IconButton(onClick = { viewModel.refreshPrayerTimes() }) {
-                        Icon(Icons.Filled.Refresh, contentDescription = stringResource(R.string.refresh_times), tint = AmberMuted)
+                        Icon(
+                            Icons.Filled.Refresh,
+                            contentDescription = stringResource(R.string.refresh_times),
+                            tint = AmberMuted
+                        )
                     }
                 }
             }
