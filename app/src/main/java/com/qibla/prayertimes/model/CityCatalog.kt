@@ -1,6 +1,7 @@
 package com.qibla.prayertimes.model
 
 import android.content.Context
+import android.os.Build
 import java.util.Locale
 
 /** One catalog entry with names in all three supported languages, plus coordinates. */
@@ -127,7 +128,15 @@ private val CITY_CATALOG = listOf(
  * any other system language.
  */
 fun defaultCities(context: Context): List<City> {
-    val language = context.resources.configuration.locales[0].language
+
+    val config = context.resources.configuration
+
+    val language = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+        config.locales[0].language
+    } else {
+        config.locale.language
+    }
+
     return CITY_CATALOG.map { entry ->
         val name = when (language) {
             "fa" -> entry.fa
