@@ -30,6 +30,7 @@ import com.qibla.prayertimes.R
 import com.qibla.prayertimes.ui.theme.*
 
 @Composable
+
 fun MenuScreen(
     onBack: () -> Unit,
     onOpenAlarms: () -> Unit,
@@ -45,13 +46,23 @@ fun MenuScreen(
             .background(NightMid)
             .padding(horizontal = 20.dp)
             .padding(top = 28.dp, bottom = 24.dp)
+            .verticalScroll(rememberScrollState())   // ← اسکرول اضافه شد
     ) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             IconButton(onClick = onBack) {
-                Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = stringResource(R.string.back), tint = AmberText)
+                Icon(
+                    Icons.AutoMirrored.Filled.ArrowBack,
+                    contentDescription = stringResource(R.string.back),
+                    tint = AmberText
+                )
             }
             Spacer(Modifier.width(4.dp))
-            Text(stringResource(R.string.menu_title), color = AmberText, fontWeight = FontWeight.Bold, fontSize = 19.sp)
+            Text(
+                stringResource(R.string.menu_title),
+                color = AmberText,
+                fontWeight = FontWeight.Bold,
+                fontSize = 19.sp
+            )
         }
 
         Spacer(Modifier.height(20.dp))
@@ -69,7 +80,6 @@ fun MenuScreen(
         MenuRow(Icons.Filled.Info, stringResource(R.string.nav_about), onOpenAbout)
     }
 }
-
 @Composable
 private fun MenuRow(icon: ImageVector, label: String, onClick: () -> Unit) {
     Row(
