@@ -36,6 +36,7 @@ import com.qibla.prayertimes.viewmodel.QiblaViewModel
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
+import android.os.Build
 
 // The salawat formula is always recited in Arabic regardless of the app's UI language, so it
 // is intentionally not routed through strings.xml (which would risk it being translated).
