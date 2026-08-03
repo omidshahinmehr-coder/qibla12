@@ -106,13 +106,42 @@ private fun LightWidgetContent(context: Context, snapshot: WidgetSnapshot?) {
             }
 
         } else {
+
+            // ⭐ نسخهٔ کامل برای جلوگیری از صفحهٔ سیاه
             Text(
-                text = context.getString(R.string.widget_updating),
+                text = "در حال بروزرسانی...",
                 style = TextStyle(
                     color = goldText,
-                    fontSize = 15.sp
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.Bold
                 )
             )
+
+            Spacer(modifier = GlanceModifier.height(8.dp))
+
+            Row(
+                modifier = GlanceModifier.fillMaxWidth(),
+                horizontalAlignment = Alignment.Horizontal.CenterHorizontally
+            ) {
+                LightCell("فجر", "--:--")
+                Spacer(modifier = GlanceModifier.width(4.dp))
+                LightCell("طلوع", "--:--")
+                Spacer(modifier = GlanceModifier.width(4.dp))
+                LightCell("ظهر", "--:--")
+            }
+
+            Spacer(modifier = GlanceModifier.height(6.dp))
+
+            Row(
+                modifier = GlanceModifier.fillMaxWidth(),
+                horizontalAlignment = Alignment.Horizontal.CenterHorizontally
+            ) {
+                LightCell("غروب", "--:--")
+                Spacer(modifier = GlanceModifier.width(4.dp))
+                LightCell("مغرب", "--:--")
+                Spacer(modifier = GlanceModifier.width(4.dp))
+                LightCell("نیمه‌شب", "--:--")
+            }
         }
     }
 }
