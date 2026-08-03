@@ -124,11 +124,11 @@ fun QiblaScreen(
               
                 //val language = context.resources.configuration.locales[0].language
                val config = context.resources.configuration
-+ val language = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-+     config.locales[0].language
-+ } else {
-+     config.locale.language
-+ }
+               val language = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                    config.locales[0].language
+               } else {
+                    config.locale.language
+               }
                 val monthName = if (language == "ar" || language == "fa") h.monthNameAr else h.monthNameEn
                 "${h.day} $monthName ${h.year}"
             }
