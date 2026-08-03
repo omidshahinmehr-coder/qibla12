@@ -4,7 +4,9 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.ArrowForwardIos
@@ -30,7 +32,6 @@ import com.qibla.prayertimes.R
 import com.qibla.prayertimes.ui.theme.*
 
 @Composable
-
 fun MenuScreen(
     onBack: () -> Unit,
     onOpenAlarms: () -> Unit,
@@ -46,7 +47,7 @@ fun MenuScreen(
             .background(NightMid)
             .padding(horizontal = 20.dp)
             .padding(top = 28.dp, bottom = 24.dp)
-            .verticalScroll(rememberScrollState())   // ← اسکرول اضافه شد
+            .verticalScroll(rememberScrollState())   // ← اسکرول برای کل منو
     ) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             IconButton(onClick = onBack) {
@@ -58,7 +59,7 @@ fun MenuScreen(
             }
             Spacer(Modifier.width(4.dp))
             Text(
-                stringResource(R.string.menu_title),
+                text = stringResource(R.string.menu_title),
                 color = AmberText,
                 fontWeight = FontWeight.Bold,
                 fontSize = 19.sp
@@ -80,6 +81,7 @@ fun MenuScreen(
         MenuRow(Icons.Filled.Info, stringResource(R.string.nav_about), onOpenAbout)
     }
 }
+
 @Composable
 private fun MenuRow(icon: ImageVector, label: String, onClick: () -> Unit) {
     Row(
@@ -92,9 +94,25 @@ private fun MenuRow(icon: ImageVector, label: String, onClick: () -> Unit) {
             .padding(horizontal = 16.dp, vertical = 16.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Icon(icon, contentDescription = null, tint = BrassLight, modifier = Modifier.size(20.dp))
+        Icon(
+            icon,
+            contentDescription = null,
+            tint = BrassLight,
+            modifier = Modifier.size(20.dp)
+        )
         Spacer(Modifier.width(14.dp))
-        Text(label, color = AmberText, fontSize = 15.sp, fontWeight = FontWeight.Medium, modifier = Modifier.weight(1f))
-        Icon(Icons.AutoMirrored.Filled.ArrowForwardIos, contentDescription = null, tint = AmberFaint, modifier = Modifier.size(14.dp))
+        Text(
+            text = label,
+            color = AmberText,
+            fontSize = 15.sp,
+            fontWeight = FontWeight.Medium,
+            modifier = Modifier.weight(1f)
+        )
+        Icon(
+            Icons.AutoMirrored.Filled.ArrowForwardIos,
+            contentDescription = null,
+            tint = AmberFaint,
+            modifier = Modifier.size(14.dp)
+        )
     }
 }
