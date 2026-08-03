@@ -19,6 +19,7 @@
         android:supportsRtl="true"
         android:localeConfig="@xml/locales_config"
         android:theme="@style/Theme.QiblaApp">
+
         <activity
             android:name=".MainActivity"
             android:exported="true"
@@ -36,17 +37,14 @@
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:theme="@style/Theme.QiblaApp" />
 
-        <!-- Fires when a scheduled adhan time arrives -->
         <receiver
             android:name=".alarm.AdhanAlarmReceiver"
             android:exported="false" />
 
-        <!-- Stops adhan playback from the notification action -->
         <receiver
             android:name=".alarm.StopAdhanReceiver"
             android:exported="false" />
 
-        <!-- Reschedules alarms after a reboot (AlarmManager alarms do not survive one) -->
         <receiver
             android:name=".alarm.BootReceiver"
             android:exported="true">
@@ -55,7 +53,6 @@
             </intent-filter>
         </receiver>
 
-        <!-- Plays the adhan sound and shows the ongoing notification -->
         <service
             android:name=".alarm.AdhanPlaybackService"
             android:exported="false"
@@ -72,11 +69,15 @@
                 android:name="android.appwidget.provider"
                 android:resource="@xml/qibla_widget_info" />
         </receiver>
-        <receiver android:name=".widget.RefreshReceiver">
-    <intent-filter>
-        <action android:name="REFRESH_QIBLA_WIDGET" />
-    </intent-filter>
-</receiver>
+
+        <!-- Refresh widget countdown without opening the app -->
+        <receiver
+            android:name=".widget.RefreshReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="REFRESH_QIBLA_WIDGET" />
+            </intent-filter>
+        </receiver>
 
     </application>
 
