@@ -13,6 +13,7 @@ import androidx.glance.GlanceId
 import androidx.glance.GlanceModifier
 import androidx.glance.action.actionStartActivity
 import androidx.glance.action.clickable
+import androidx.glance.action.actionRunCallback
 import androidx.glance.appwidget.AndroidRemoteViews
 import androidx.glance.appwidget.GlanceAppWidget
 import androidx.glance.appwidget.cornerRadius
@@ -42,6 +43,13 @@ private val cellHeight = 59.dp
 
 private val WEEKDAYS_FA = arrayOf("یکشنبه", "دوشنبه", "سه‌شنبه", "چهارشنبه", "پنجشنبه", "جمعه", "شنبه")
 private val WEEKDAYS_AR = arrayOf("الأحد", "الاثنين", "الثلاثاء", "الأربعاء", "الخميس", "الجمعة", "السبت")
+
+// 🔥 دکمهٔ رفرش (کلیک روی تایمر)
+class RefreshTimerAction : ActionCallback {
+    override suspend fun onAction(context: Context, glanceId: GlanceId) {
+        QiblaWidget().update(context, glanceId)
+    }
+}
 
 class QiblaWidget : GlanceAppWidget() {
     override suspend fun provideGlance(context: Context, id: GlanceId) {
@@ -117,6 +125,7 @@ private fun WidgetContent(langContext: Context, snapshot: WidgetSnapshot?) {
                 )
             }
 
+            // 🔥 تایمر کلیک‌پذیر روی Android 5
             val timerBlock: @Composable () -> Unit = {
                 if (countdown != null) {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
@@ -134,7 +143,8 @@ private fun WidgetContent(langContext: Context, snapshot: WidgetSnapshot?) {
                                 fontSize = 16.sp,
                                 fontWeight = FontWeight.Bold,
                                 textAlign = TextAlign.Center
-                            )
+                            ),
+                            modifier = GlanceModifier.clickable(actionRunCallback<RefreshTimerAction>())
                         )
                     }
                 }
