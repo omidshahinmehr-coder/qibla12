@@ -88,7 +88,7 @@ private fun LightWidgetContent(langContext: Context, snapshot: WidgetSnapshot?) 
                 )
             )
 
- Spacer(modifier = GlanceModifier.height(6.dp))
+ Spacer(modifier = GlanceModifier.height(2.dp))
 
         // ⭐ تاریخ شمسی
         Text(
@@ -100,7 +100,7 @@ private fun LightWidgetContent(langContext: Context, snapshot: WidgetSnapshot?) 
             )
         )
 
-        Spacer(modifier = GlanceModifier.height(10.dp))
+        Spacer(modifier = GlanceModifier.height(2.dp))
 
         // ⭐ ردیف اول
         Row(
