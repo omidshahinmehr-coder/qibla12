@@ -70,6 +70,7 @@ private fun LightWidgetContent(langContext: Context, snapshot: WidgetSnapshot?) 
             .background(bgColor)
             .cornerRadius(20.dp)
             .padding(12.dp),
+        clickable(actionStartActivity<MainActivity>()),
         horizontalAlignment = Alignment.Horizontal.CenterHorizontally
     ) {
 
@@ -156,7 +157,7 @@ private fun LightCell(label: String, time: String) {
                     fontWeight = FontWeight.Bold
                 )
             )
-            Spacer(modifier = GlanceModifier.height(2.dp))
+            Spacer(modifier = GlanceModifier.height(1.dp))
             Text(
                 text = time,
                 style = TextStyle(
