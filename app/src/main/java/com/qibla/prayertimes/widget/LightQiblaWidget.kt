@@ -3,8 +3,6 @@ package com.qibla.prayertimes.widget
 import android.content.Context
 import androidx.compose.runtime.Composable
 import androidx.glance.GlanceModifier
-import androidx.glance.Image
-import androidx.glance.ImageProvider
 import androidx.glance.appwidget.GlanceAppWidget
 import androidx.glance.appwidget.GlanceAppWidgetReceiver
 import androidx.glance.appwidget.provideContent
@@ -15,144 +13,133 @@ import androidx.glance.text.FontWeight
 import androidx.glance.unit.ColorProvider
 import androidx.glance.unit.dp
 import androidx.glance.unit.sp
-import com.qibla.prayertimes.R
 import com.qibla.prayertimes.data.WidgetDataStore
+import com.qibla.prayertimes.data.WidgetSnapshot
 import com.qibla.prayertimes.data.prayerLabels
-import com.qibla.prayertimes.data.LocalePrefs
+import com.qibla.prayertimes.util.LocalePrefs
 import java.time.LocalTime
 
+// ⭐ رنگ‌ها
+private val goldText = ColorProvider(android.graphics.Color.parseColor("#8A6A2E"))
+private val whiteText = ColorProvider(android.graphics.Color.WHITE)
+
+// ⭐ مقدار ثابت سلول‌ها (مثل ویجت اصلی)
+private val cellWidth = 100.dp
+private val cellHeight = 32.dp
+
 class LightQiblaWidget : GlanceAppWidget() {
-
     override suspend fun provideGlance(context: Context) {
+        val localizedContext = LocalePrefs.wrap(context)
+        val snapshot = WidgetDataStore(context).load()
         provideContent {
-            val snapshot = WidgetDataStore(context).load()
-            val locale = LocalePrefs.wrap(context)
-
-            if (snapshot == null) {
-                LightWidgetLoading()
-            } else {
-                LightWidgetContent(snapshot, locale)
-            }
+            LightWidgetContent(localizedContext, snapshot)
         }
     }
 }
 
 @Composable
-fun LightWidgetLoading() {
-    Column(
-        modifier = GlanceModifier
-            .fillMaxSize()
-            .padding(12.dp),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Text(
-            text = "در حال بارگذاری…",
-            style = TextStyle(
-                color = ColorProvider(android.graphics.Color.WHITE),
-                fontSize = 18.sp,
-                fontWeight = FontWeight.Bold
-            )
-        )
-    }
-}
-
-@Composable
-fun LightWidgetContent(snapshot: WidgetDataStore.Snapshot, locale: LocalePrefs) {
-
-    val goldText = ColorProvider(android.graphics.Color.parseColor("#FFD700"))
-    val whiteText = ColorProvider(android.graphics.Color.WHITE)
-
-    val cellWidth = 100.dp   // ⭐ عرض سلول‌ها بزرگ‌تر شد
-    val cellHeight = 32.dp
-
-    val now = LocalTime.now().toString().substring(0, 5)   // ⭐ ساعت فعلی
+private fun LightWidgetContent(langContext: Context, snapshot: WidgetSnapshot?) {
 
     Column(
         modifier = GlanceModifier
             .fillMaxSize()
             .padding(12.dp),
-        verticalAlignment = Alignment.Top,
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.Horizontal.CenterHorizontally
     ) {
 
-        // ⭐ ساعت در بالاترین بخش
-        Text(
-            text = now,
-            style = TextStyle(
-                color = goldText,
-                fontSize = 22.sp,
-                fontWeight = FontWeight.Bold
+        if (snapshot != null) {
+
+            // ⭐ ساعت بالا
+            val now = LocalTime.now().toString().substring(0, 5)
+            Text(
+                text = now,
+                style = TextStyle(
+                    color = goldText,
+                    fontSize = 22.sp,
+                    fontWeight = FontWeight.Bold
+                )
             )
-        )
 
-        Spacer(modifier = GlanceModifier.height(6.dp))
+            Spacer(modifier = GlanceModifier.height(6.dp))
 
-        // ⭐ تاریخ شمسی زیر ساعت
-        Text(
-            text = snapshot.jalaliText,
-            style = TextStyle(
-                color = goldText,
-                fontSize = 18.sp,
-                fontWeight = FontWeight.Medium
+            // ⭐ تاریخ شمسی
+            Text(
+                text = snapshot.jalaliText,
+                style = TextStyle(
+                    color = goldText,
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.Medium
+                )
             )
-        )
 
-        Spacer(modifier = GlanceModifier.height(12.dp))
+            Spacer(modifier = GlanceModifier.height(12.dp))
 
-        // ⭐ جدول اوقات شرعی
-        Column(
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            prayerLabels(locale).forEach { (key, label) ->
-                val time = snapshot.timings[key] ?: "—"
+            // ⭐ جدول اوقات شرعی
+            val labels = prayerLabels(langContext)
 
-                Row(
-                    modifier = GlanceModifier
-                        .fillMaxWidth()
-                        .padding(vertical = 4.dp),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
+            Column(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                labels.forEach { (key, label) ->
+                    val time = snapshot.timings[key] ?: "--:--"
 
-                    // عنوان
-                    Box(
+                    Row(
                         modifier = GlanceModifier
-                            .width(cellWidth)
-                            .height(cellHeight),
-                        contentAlignment = Alignment.Center
+                            .fillMaxWidth()
+                            .padding(vertical = 4.dp),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalAlignment = Alignment.CenterHorizontally
                     ) {
-                        Text(
-                            text = label,
-                            style = TextStyle(
-                                color = whiteText,
-                                fontSize = 14.sp,
-                                fontWeight = FontWeight.Medium
-                            )
-                        )
-                    }
 
-                    Spacer(modifier = GlanceModifier.width(8.dp))
-
-                    // زمان
-                    Box(
-                        modifier = GlanceModifier
-                            .width(cellWidth)
-                            .height(cellHeight),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Text(
-                            text = time,
-                            style = TextStyle(
-                                color = goldText,
-                                fontSize = 14.sp,
-                                fontWeight = FontWeight.Bold
+                        // عنوان
+                        Box(
+                            modifier = GlanceModifier
+                                .width(cellWidth)
+                                .height(cellHeight),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Text(
+                                text = label,
+                                style = TextStyle(
+                                    color = whiteText,
+                                    fontSize = 14.sp,
+                                    fontWeight = FontWeight.Medium
+                                )
                             )
-                        )
+                        }
+
+                        Spacer(modifier = GlanceModifier.width(8.dp))
+
+                        // زمان
+                        Box(
+                            modifier = GlanceModifier
+                                .width(cellWidth)
+                                .height(cellHeight),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Text(
+                                text = time,
+                                style = TextStyle(
+                                    color = goldText,
+                                    fontSize = 14.sp,
+                                    fontWeight = FontWeight.Bold
+                                )
+                            )
+                        }
                     }
                 }
             }
+
+        } else {
+            Text(
+                text = "در حال بارگذاری…",
+                style = TextStyle(
+                    color = goldText,
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.Bold
+                )
+            )
         }
     }
 }
