@@ -56,7 +56,7 @@ private fun LightWidgetContent(langContext: Context, snapshot: WidgetSnapshot?) 
             .background(bgColor)
             .cornerRadius(20.dp)
             .padding(12.dp)
-            .clickable(actionStartActivity<MainActivity>()),   // ✔ کاملاً مثل ویجت اصلی
+            .clickable(actionStartActivity<MainActivity>()),
         horizontalAlignment = Alignment.Horizontal.CenterHorizontally
     ) {
 
@@ -70,52 +70,52 @@ private fun LightWidgetContent(langContext: Context, snapshot: WidgetSnapshot?) 
                     textAlign = TextAlign.Center
                 )
             )
-            return
-        }
+        } else {
 
-        // ⭐ ساعت — دقیقاً مثل ویجت اصلی
-        AndroidRemoteViews(
-            RemoteViews(langContext.packageName, R.layout.widget_clock)
-        )
-
-        Spacer(modifier = GlanceModifier.height(2.dp))
-
-        // ⭐ تاریخ شمسی
-        Text(
-            text = snapshot.jalaliText,
-            style = TextStyle(
-                color = goldText,
-                fontSize = 20.sp,
-                fontWeight = FontWeight.Bold
+            // ⭐ ساعت مثل ویجت اصلی
+            AndroidRemoteViews(
+                RemoteViews(langContext.packageName, R.layout.widget_clock)
             )
-        )
 
-        Spacer(modifier = GlanceModifier.height(6.dp))
+            Spacer(modifier = GlanceModifier.height(2.dp))
 
-        // ⭐ ردیف اول
-        Row(
-            modifier = GlanceModifier.fillMaxWidth(),
-            horizontalAlignment = Alignment.Horizontal.CenterHorizontally
-        ) {
-            LightCell(labels["Fajr"] ?: "Fajr", snapshot.timings["Fajr"] ?: "--:--")
-            Spacer(modifier = GlanceModifier.width(4.dp))
-            LightCell(labels["Sunrise"] ?: "Sunrise", snapshot.timings["Sunrise"] ?: "--:--")
-            Spacer(modifier = GlanceModifier.width(4.dp))
-            LightCell(labels["Dhuhr"] ?: "Dhuhr", snapshot.timings["Dhuhr"] ?: "--:--")
-        }
+            // ⭐ تاریخ شمسی
+            Text(
+                text = snapshot.jalaliText,
+                style = TextStyle(
+                    color = goldText,
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.Bold
+                )
+            )
 
-        Spacer(modifier = GlanceModifier.height(6.dp))
+            Spacer(modifier = GlanceModifier.height(6.dp))
 
-        // ⭐ ردیف دوم
-        Row(
-            modifier = GlanceModifier.fillMaxWidth(),
-            horizontalAlignment = Alignment.Horizontal.CenterHorizontally
-        ) {
-            LightCell(labels["Sunset"] ?: "Sunset", snapshot.timings["Sunset"] ?: "--:--")
-            Spacer(modifier = GlanceModifier.width(4.dp))
-            LightCell(labels["Maghrib"] ?: "Maghrib", snapshot.timings["Maghrib"] ?: "--:--")
-            Spacer(modifier = GlanceModifier.width(4.dp))
-            LightCell(labels["Midnight"] ?: "Midnight", snapshot.timings["Midnight"] ?: "--:--")
+            // ⭐ ردیف اول
+            Row(
+                modifier = GlanceModifier.fillMaxWidth(),
+                horizontalAlignment = Alignment.Horizontal.CenterHorizontally
+            ) {
+                LightCell(labels["Fajr"] ?: "Fajr", snapshot.timings["Fajr"] ?: "--:--")
+                Spacer(modifier = GlanceModifier.width(4.dp))
+                LightCell(labels["Sunrise"] ?: "Sunrise", snapshot.timings["Sunrise"] ?: "--:--")
+                Spacer(modifier = GlanceModifier.width(4.dp))
+                LightCell(labels["Dhuhr"] ?: "Dhuhr", snapshot.timings["Dhuhr"] ?: "--:--")
+            }
+
+            Spacer(modifier = GlanceModifier.height(6.dp))
+
+            // ⭐ ردیف دوم
+            Row(
+                modifier = GlanceModifier.fillMaxWidth(),
+                horizontalAlignment = Alignment.Horizontal.CenterHorizontally
+            ) {
+                LightCell(labels["Sunset"] ?: "Sunset", snapshot.timings["Sunset"] ?: "--:--")
+                Spacer(modifier = GlanceModifier.width(4.dp))
+                LightCell(labels["Maghrib"] ?: "Maghrib", snapshot.timings["Maghrib"] ?: "--:--")
+                Spacer(modifier = GlanceModifier.width(4.dp))
+                LightCell(labels["Midnight"] ?: "Midnight", snapshot.timings["Midnight"] ?: "--:--")
+            }
         }
     }
 }
