@@ -1,12 +1,16 @@
 package com.qibla.prayertimes.widget
-import java.util.*
+
 import android.content.Context
-import android.os.Build
+import android.widget.RemoteViews
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.glance.GlanceId
 import androidx.glance.GlanceModifier
+import androidx.glance.action.actionStartActivity
+import androidx.glance.action.clickable
+import androidx.glance.appwidget.AndroidRemoteViews
 import androidx.glance.appwidget.GlanceAppWidget
 import androidx.glance.appwidget.cornerRadius
 import androidx.glance.appwidget.provideContent
@@ -14,13 +18,12 @@ import androidx.glance.background
 import androidx.glance.layout.*
 import androidx.glance.text.*
 import androidx.glance.unit.ColorProvider
-import androidx.glance.action.clickable
-import androidx.glance.action.actionStartActivity
 import com.qibla.prayertimes.MainActivity
+import com.qibla.prayertimes.R
 import com.qibla.prayertimes.data.WidgetDataStore
 import com.qibla.prayertimes.data.WidgetSnapshot
-import com.qibla.prayertimes.util.LocalePrefs
 import com.qibla.prayertimes.data.prayerLabels
+import com.qibla.prayertimes.util.LocalePrefs
 
 private val bgColor = ColorProvider(Color(0xFFF3ECDD))
 private val goldText = ColorProvider(Color(0xFF8A6A2E))
@@ -31,7 +34,7 @@ private val cellWidth = 100.dp
 private val cellHeight = 50.dp
 
 class LightQiblaWidget : GlanceAppWidget() {
-    override suspend fun provideGlance(context: Context, id: androidx.glance.GlanceId) {
+    override suspend fun provideGlance(context: Context, id: GlanceId) {
 
         val localizedContext = LocalePrefs.wrap(context)
         val snapshot = WidgetDataStore(context).load()
@@ -47,52 +50,35 @@ private fun LightWidgetContent(langContext: Context, snapshot: WidgetSnapshot?) 
 
     val labels = prayerLabels(langContext)
 
-    if (snapshot == null) {
-        Text(
-            text = labels["Updating"] ?: "Updating...",
-            style = TextStyle(
-                color = goldText,
-                fontSize = 16.sp,
-                fontWeight = FontWeight.Bold,
-                textAlign = TextAlign.Center
-            )
-        )
-        return
-    }
-
-    val fajr = snapshot.timings["Fajr"] ?: "--:--"
-    val sunrise = snapshot.timings["Sunrise"] ?: "--:--"
-    val dhuhr = snapshot.timings["Dhuhr"] ?: "--:--"
-    val sunset = snapshot.timings["Sunset"] ?: "--:--"
-    val maghrib = snapshot.timings["Maghrib"] ?: "--:--"
-    val midnight = snapshot.timings["Midnight"] ?: "--:--"
-
     Column(
         modifier = GlanceModifier
             .fillMaxSize()
             .background(bgColor)
             .cornerRadius(20.dp)
-            .padding(12.dp),
-       // clickable(actionStartActivity<MainActivity>()),
+            .padding(12.dp)
+            .clickable(actionStartActivity<MainActivity>()),   // ✔ کاملاً مثل ویجت اصلی
         horizontalAlignment = Alignment.Horizontal.CenterHorizontally
     ) {
 
-             // ⭐ ساعت بالا
-            val cal = Calendar.getInstance()
-            val hour = cal.get(Calendar.HOUR_OF_DAY)
-            val minute = cal.get(Calendar.MINUTE)
-            val now = String.format("%02d:%02d", hour, minute)
-
+        if (snapshot == null) {
             Text(
-                text = now,
+                text = labels["Updating"] ?: "Updating...",
                 style = TextStyle(
                     color = goldText,
-                    fontSize = 22.sp,
-                    fontWeight = FontWeight.Bold
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.Bold,
+                    textAlign = TextAlign.Center
                 )
             )
+            return
+        }
 
- Spacer(modifier = GlanceModifier.height(2.dp))
+        // ⭐ ساعت — دقیقاً مثل ویجت اصلی
+        AndroidRemoteViews(
+            RemoteViews(langContext.packageName, R.layout.widget_clock)
+        )
+
+        Spacer(modifier = GlanceModifier.height(2.dp))
 
         // ⭐ تاریخ شمسی
         Text(
@@ -104,18 +90,18 @@ private fun LightWidgetContent(langContext: Context, snapshot: WidgetSnapshot?) 
             )
         )
 
-        Spacer(modifier = GlanceModifier.height(2.dp))
+        Spacer(modifier = GlanceModifier.height(6.dp))
 
         // ⭐ ردیف اول
         Row(
             modifier = GlanceModifier.fillMaxWidth(),
             horizontalAlignment = Alignment.Horizontal.CenterHorizontally
         ) {
-            LightCell(labels["Fajr"] ?: "Fajr", fajr)
+            LightCell(labels["Fajr"] ?: "Fajr", snapshot.timings["Fajr"] ?: "--:--")
             Spacer(modifier = GlanceModifier.width(4.dp))
-            LightCell(labels["Sunrise"] ?: "Sunrise", sunrise)
+            LightCell(labels["Sunrise"] ?: "Sunrise", snapshot.timings["Sunrise"] ?: "--:--")
             Spacer(modifier = GlanceModifier.width(4.dp))
-            LightCell(labels["Dhuhr"] ?: "Dhuhr", dhuhr)
+            LightCell(labels["Dhuhr"] ?: "Dhuhr", snapshot.timings["Dhuhr"] ?: "--:--")
         }
 
         Spacer(modifier = GlanceModifier.height(6.dp))
@@ -125,11 +111,11 @@ private fun LightWidgetContent(langContext: Context, snapshot: WidgetSnapshot?) 
             modifier = GlanceModifier.fillMaxWidth(),
             horizontalAlignment = Alignment.Horizontal.CenterHorizontally
         ) {
-            LightCell(labels["Sunset"] ?: "Sunset", sunset)
+            LightCell(labels["Sunset"] ?: "Sunset", snapshot.timings["Sunset"] ?: "--:--")
             Spacer(modifier = GlanceModifier.width(4.dp))
-            LightCell(labels["Maghrib"] ?: "Maghrib", maghrib)
+            LightCell(labels["Maghrib"] ?: "Maghrib", snapshot.timings["Maghrib"] ?: "--:--")
             Spacer(modifier = GlanceModifier.width(4.dp))
-            LightCell(labels["Midnight"] ?: "Midnight", midnight)
+            LightCell(labels["Midnight"] ?: "Midnight", snapshot.timings["Midnight"] ?: "--:--")
         }
     }
 }
