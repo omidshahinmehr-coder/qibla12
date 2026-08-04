@@ -13,6 +13,7 @@ import com.qibla.prayertimes.data.PrayerTimesState
 import com.qibla.prayertimes.data.WidgetDataStore
 import com.qibla.prayertimes.model.defaultCities
 import com.qibla.prayertimes.widget.QiblaWidgetUpdater
+import com.qibla.prayertimes.widget.LightQiblaWidgetUpdater
 import java.util.concurrent.TimeUnit
 
 /**
