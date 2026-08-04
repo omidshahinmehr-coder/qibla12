@@ -24,7 +24,7 @@ private val goldText = ColorProvider(Color(0xFF8A6A2E))
 private val cellFillColor = ColorProvider(Color(0xFFFBF6EA))
 private val cellBorderColor = ColorProvider(Color(0xFFD9C8A0))
 
-private val cellWidth = 70.dp
+private val cellWidth = 100.dp
 private val cellHeight = 50.dp
 
 class LightQiblaWidget : GlanceAppWidget() {
@@ -72,6 +72,18 @@ private fun LightWidgetContent(langContext: Context, snapshot: WidgetSnapshot?) 
             .padding(12.dp),
         horizontalAlignment = Alignment.Horizontal.CenterHorizontally
     ) {
+
+             // ⭐ ساعت بالا
+            val now = LocalTime.now().toString().substring(0, 5)
+            Text(
+                text = now,
+                style = TextStyle(
+                    color = goldText,
+                    fontSize = 22.sp,
+                    fontWeight = FontWeight.Bold
+                )
+            )
+ Spacer(modifier = GlanceModifier.height(6.dp))
 
         // ⭐ تاریخ شمسی
         Text(
