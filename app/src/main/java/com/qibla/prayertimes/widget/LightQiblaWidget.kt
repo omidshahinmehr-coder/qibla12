@@ -18,6 +18,8 @@ import androidx.glance.background
 import androidx.glance.layout.*
 import androidx.glance.text.*
 import androidx.glance.unit.ColorProvider
+import androidx.glance.Image
+import androidx.glance.ImageProvider
 import com.qibla.prayertimes.MainActivity
 import com.qibla.prayertimes.R
 import com.qibla.prayertimes.data.WidgetDataStore
@@ -109,7 +111,7 @@ private fun LightWidgetContent(langContext: Context, snapshot: WidgetSnapshot?) 
                         )
                         Spacer(modifier = GlanceModifier.width(4.dp))
                         Image(
-                            provider = androidx.glance.ImageProvider(R.drawable.ic_location_pin),
+                            provider = ImageProvider(R.drawable.ic_location_pin),
                             contentDescription = null,
                             modifier = GlanceModifier.width(12.dp).height(12.dp)
                         )
