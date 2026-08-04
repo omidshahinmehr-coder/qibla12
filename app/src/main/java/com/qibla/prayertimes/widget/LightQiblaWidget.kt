@@ -30,7 +30,7 @@ private val goldText = ColorProvider(Color(0xFF8A6A2E))
 private val cellFillColor = ColorProvider(Color(0xFFFBF6EA))
 private val cellBorderColor = ColorProvider(Color(0xFFD9C8A0))
 
-private val cellWidth = 100.dp
+private val cellWidth = 90.dp
 private val cellHeight = 50.dp
 
 class LightQiblaWidget : GlanceAppWidget() {
@@ -70,91 +70,13 @@ private fun LightWidgetContent(langContext: Context, snapshot: WidgetSnapshot?) 
                     textAlign = TextAlign.Center
                 )
             )
-        } else {
+            return
+        }
 
-            // ⭐ ساعت مثل ویجت اصلی
+        // ⭐ ساعت (RemoteViews)
+        Box(
+            modifier = GlanceModifier.fillMaxWidth(),
+            contentAlignment = Alignment.Center
+        ) {
             AndroidRemoteViews(
                 RemoteViews(langContext.packageName, R.layout.widget_clock)
-            )
-
-            Spacer(modifier = GlanceModifier.height(2.dp))
-
-            // ⭐ تاریخ شمسی
-            Text(
-                text = snapshot.jalaliText,
-                style = TextStyle(
-                    color = goldText,
-                    fontSize = 20.sp,
-                    fontWeight = FontWeight.Bold
-                )
-            )
-
-            Spacer(modifier = GlanceModifier.height(6.dp))
-
-            // ⭐ ردیف اول
-            Row(
-                modifier = GlanceModifier.fillMaxWidth(),
-                horizontalAlignment = Alignment.Horizontal.CenterHorizontally
-            ) {
-                LightCell(labels["Fajr"] ?: "Fajr", snapshot.timings["Fajr"] ?: "--:--")
-                Spacer(modifier = GlanceModifier.width(4.dp))
-                LightCell(labels["Sunrise"] ?: "Sunrise", snapshot.timings["Sunrise"] ?: "--:--")
-                Spacer(modifier = GlanceModifier.width(4.dp))
-                LightCell(labels["Dhuhr"] ?: "Dhuhr", snapshot.timings["Dhuhr"] ?: "--:--")
-            }
-
-            Spacer(modifier = GlanceModifier.height(6.dp))
-
-            // ⭐ ردیف دوم
-            Row(
-                modifier = GlanceModifier.fillMaxWidth(),
-                horizontalAlignment = Alignment.Horizontal.CenterHorizontally
-            ) {
-                LightCell(labels["Sunset"] ?: "Sunset", snapshot.timings["Sunset"] ?: "--:--")
-                Spacer(modifier = GlanceModifier.width(4.dp))
-                LightCell(labels["Maghrib"] ?: "Maghrib", snapshot.timings["Maghrib"] ?: "--:--")
-                Spacer(modifier = GlanceModifier.width(4.dp))
-                LightCell(labels["Midnight"] ?: "Midnight", snapshot.timings["Midnight"] ?: "--:--")
-            }
-        }
-    }
-}
-
-@Composable
-private fun LightCell(label: String, time: String) {
-    Column(
-        modifier = GlanceModifier
-            .width(cellWidth)
-            .background(cellBorderColor)
-            .cornerRadius(10.dp)
-            .padding(1.dp)
-    ) {
-        Column(
-            modifier = GlanceModifier
-                .fillMaxWidth()
-                .height(cellHeight)
-                .background(cellFillColor)
-                .cornerRadius(8.dp)
-                .padding(4.dp),
-            horizontalAlignment = Alignment.Horizontal.CenterHorizontally
-        ) {
-            Text(
-                text = label,
-                style = TextStyle(
-                    color = goldText,
-                    fontSize = 11.sp,
-                    fontWeight = FontWeight.Bold
-                )
-            )
-            Spacer(modifier = GlanceModifier.height(1.dp))
-            Text(
-                text = time,
-                style = TextStyle(
-                    color = goldText,
-                    fontSize = 15.sp,
-                    fontWeight = FontWeight.Bold
-                )
-            )
-        }
-    }
-}
