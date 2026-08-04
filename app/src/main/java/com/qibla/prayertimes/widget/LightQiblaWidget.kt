@@ -14,6 +14,9 @@ import androidx.glance.background
 import androidx.glance.layout.*
 import androidx.glance.text.*
 import androidx.glance.unit.ColorProvider
+import androidx.glance.action.clickable
+import androidx.glance.action.actionStartActivity
+import com.qibla.prayertimes.MainActivity
 import com.qibla.prayertimes.data.WidgetDataStore
 import com.qibla.prayertimes.data.WidgetSnapshot
 import com.qibla.prayertimes.util.LocalePrefs
