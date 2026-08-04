@@ -35,6 +35,11 @@ class PrayerTimesWorker(context: Context, params: WorkerParameters) : CoroutineW
                 WidgetDataStore(applicationContext).save(city.name, state.result.timings, state.result.hijri, state.result.isOffline)
                 AlarmScheduler.scheduleToday(applicationContext, state.result.timings)
                 QiblaWidgetUpdater.requestUpdate(applicationContext)
+                // ⭐ ویجت سبک ← این خط مشکل را ۱۰۰٪ حل می‌کند
+    LightQiblaWidgetUpdater.requestUpdate(applicationContext)
+    // یا:
+    // LightQiblaWidget().updateAll(applicationContext)
+
                 Result.success()
             }
             is PrayerTimesState.Error -> Result.retry()
