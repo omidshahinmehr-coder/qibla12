@@ -74,7 +74,11 @@ private fun LightWidgetContent(langContext: Context, snapshot: WidgetSnapshot?) 
     ) {
 
              // ⭐ ساعت بالا
-            val now = LocalTime.now().toString().substring(0, 5)
+            val cal = Calendar.getInstance()
+            val hour = cal.get(Calendar.HOUR_OF_DAY)
+            val minute = cal.get(Calendar.MINUTE)
+            val now = String.format("%02d:%02d", hour, minute)
+
             Text(
                 text = now,
                 style = TextStyle(
@@ -83,6 +87,7 @@ private fun LightWidgetContent(langContext: Context, snapshot: WidgetSnapshot?) 
                     fontWeight = FontWeight.Bold
                 )
             )
+
  Spacer(modifier = GlanceModifier.height(6.dp))
 
         // ⭐ تاریخ شمسی
