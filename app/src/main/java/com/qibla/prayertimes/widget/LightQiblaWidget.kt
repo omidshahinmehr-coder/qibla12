@@ -15,10 +15,6 @@ import androidx.glance.text.*
 import androidx.glance.unit.ColorProvider
 import com.qibla.prayertimes.data.WidgetDataStore
 import com.qibla.prayertimes.data.WidgetSnapshot
-import com.qibla.prayertimes.data.prayerLabels
-import com.qibla.prayertimes.util.LocalePrefs
-import java.text.SimpleDateFormat
-import java.util.*
 
 private val bgColor = ColorProvider(Color(0xFFF3ECDD))
 private val goldText = ColorProvider(Color(0xFF8A6A2E))
@@ -30,18 +26,15 @@ private val cellHeight = 50.dp
 
 class LightQiblaWidget : GlanceAppWidget() {
     override suspend fun provideGlance(context: Context, id: androidx.glance.GlanceId) {
-        val localizedContext = LocalePrefs.wrap(context)
         val snapshot = WidgetDataStore(context).load()
         provideContent {
-            LightWidgetContent(localizedContext, snapshot)
+            LightWidgetContent(snapshot)
         }
     }
 }
 
 @Composable
-private fun LightWidgetContent(context: Context, snapshot: WidgetSnapshot?) {
-
-    val labels = prayerLabels(context)
+private fun LightWidgetContent(snapshot: WidgetSnapshot?) {
 
     Column(
         modifier = GlanceModifier
@@ -52,27 +45,53 @@ private fun LightWidgetContent(context: Context, snapshot: WidgetSnapshot?) {
         horizontalAlignment = Alignment.Horizontal.CenterHorizontally
     ) {
 
-        val timeText = SimpleDateFormat("HH:mm", Locale.getDefault()).format(Date())
-        val dateText = snapshot?.jalaliText ?: "—"
-
-        // ⭐ ساعت
-        Text(
-            text = timeText,
-            style = TextStyle(
-                color = goldText,
-                fontSize = 22.sp,
-                fontWeight = FontWeight.Bold
+        // ⭐ اگر snapshot=null باشد، یک UI کامل و بدون کرش نشان بده
+        if (snapshot == null) {
+            Text(
+                text = "در حال بروزرسانی...",
+                style = TextStyle(
+                    color = goldText,
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.Bold
+                )
             )
-        )
 
-        Spacer(modifier = GlanceModifier.height(4.dp))
+            Spacer(modifier = GlanceModifier.height(8.dp))
 
-        // ⭐ تاریخ شمسی
+            Row(
+                modifier = GlanceModifier.fillMaxWidth(),
+                horizontalAlignment = Alignment.Horizontal.CenterHorizontally
+            ) {
+                LightCell("فجر", "--:--")
+                Spacer(modifier = GlanceModifier.width(4.dp))
+                LightCell("طلوع", "--:--")
+                Spacer(modifier = GlanceModifier.width(4.dp))
+                LightCell("ظهر", "--:--")
+            }
+
+            Spacer(modifier = GlanceModifier.height(6.dp))
+
+            Row(
+                modifier = GlanceModifier.fillMaxWidth(),
+                horizontalAlignment = Alignment.Horizontal.CenterHorizontally
+            ) {
+                LightCell("غروب", "--:--")
+                Spacer(modifier = GlanceModifier.width(4.dp))
+                LightCell("مغرب", "--:--")
+                Spacer(modifier = GlanceModifier.width(4.dp))
+                LightCell("نیمه‌شب", "--:--")
+            }
+
+            return
+        }
+
+        // ⭐ تاریخ شمسی از snapshot
         Text(
-            text = dateText,
+            text = snapshot.jalaliText,
             style = TextStyle(
                 color = goldText,
-                fontSize = 16.sp
+                fontSize = 20.sp,
+                fontWeight = FontWeight.Bold
             )
         )
 
@@ -83,11 +102,11 @@ private fun LightWidgetContent(context: Context, snapshot: WidgetSnapshot?) {
             modifier = GlanceModifier.fillMaxWidth(),
             horizontalAlignment = Alignment.Horizontal.CenterHorizontally
         ) {
-            LightCell(labels["Fajr"] ?: "فجر", snapshot?.timings?.get("Fajr") ?: "--:--")
+            LightCell("فجر", snapshot.timings["Fajr"] ?: "--:--")
             Spacer(modifier = GlanceModifier.width(4.dp))
-            LightCell(labels["Sunrise"] ?: "طلوع", snapshot?.timings?.get("Sunrise") ?: "--:--")
+            LightCell("طلوع", snapshot.timings["Sunrise"] ?: "--:--")
             Spacer(modifier = GlanceModifier.width(4.dp))
-            LightCell(labels["Dhuhr"] ?: "ظهر", snapshot?.timings?.get("Dhuhr") ?: "--:--")
+            LightCell("ظهر", snapshot.timings["Dhuhr"] ?: "--:--")
         }
 
         Spacer(modifier = GlanceModifier.height(6.dp))
@@ -97,11 +116,11 @@ private fun LightWidgetContent(context: Context, snapshot: WidgetSnapshot?) {
             modifier = GlanceModifier.fillMaxWidth(),
             horizontalAlignment = Alignment.Horizontal.CenterHorizontally
         ) {
-            LightCell(labels["Sunset"] ?: "غروب", snapshot?.timings?.get("Sunset") ?: "--:--")
+            LightCell("غروب", snapshot.timings["Sunset"] ?: "--:--")
             Spacer(modifier = GlanceModifier.width(4.dp))
-            LightCell(labels["Maghrib"] ?: "مغرب", snapshot?.timings?.get("Maghrib") ?: "--:--")
+            LightCell("مغرب", snapshot.timings["Maghrib"] ?: "--:--")
             Spacer(modifier = GlanceModifier.width(4.dp))
-            LightCell(labels["Midnight"] ?: "نیمه‌شب", snapshot?.timings?.get("Midnight") ?: "--:--")
+            LightCell("نیمه‌شب", snapshot.timings["Midnight"] ?: "--:--")
         }
     }
 }
