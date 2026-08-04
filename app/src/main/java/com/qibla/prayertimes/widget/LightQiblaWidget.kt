@@ -72,17 +72,52 @@ private fun LightWidgetContent(langContext: Context, snapshot: WidgetSnapshot?) 
             )
         } else {
 
-            // ⭐ ساعت (RemoteViews)
-            Box(
+            // ⭐ ردیف اول: ساعت سمت چپ + نام شهر سمت راست
+            Row(
                 modifier = GlanceModifier.fillMaxWidth(),
-                contentAlignment = Alignment.Center
+                verticalAlignment = Alignment.Vertical.CenterVertically,
+                horizontalAlignment = Alignment.Horizontal.CenterHorizontally
             ) {
-                AndroidRemoteViews(
-                    RemoteViews(langContext.packageName, R.layout.widget_clock)
-                )
+
+                // ساعت
+                Box(
+                    modifier = GlanceModifier.defaultWeight(),
+                    contentAlignment = Alignment.CenterStart
+                ) {
+                    AndroidRemoteViews(
+                        RemoteViews(langContext.packageName, R.layout.widget_clock)
+                    )
+                }
+
+                // نام شهر + آیکون مکان
+                Box(
+                    modifier = GlanceModifier.defaultWeight(),
+                    contentAlignment = Alignment.CenterEnd
+                ) {
+                    Row(
+                        verticalAlignment = Alignment.Vertical.CenterVertically
+                    ) {
+                        Text(
+                            text = snapshot.cityName,
+                            style = TextStyle(
+                                color = goldText,
+                                fontSize = 16.sp,
+                                fontWeight = FontWeight.Bold,
+                                textAlign = TextAlign.End
+                            ),
+                            maxLines = 1
+                        )
+                        Spacer(modifier = GlanceModifier.width(4.dp))
+                        Image(
+                            provider = androidx.glance.ImageProvider(R.drawable.ic_location_pin),
+                            contentDescription = null,
+                            modifier = GlanceModifier.width(12.dp).height(12.dp)
+                        )
+                    }
+                }
             }
 
-            Spacer(modifier = GlanceModifier.height(4.dp))
+            Spacer(modifier = GlanceModifier.height(6.dp))
 
             // ⭐ تاریخ شمسی
             Text(
@@ -96,7 +131,7 @@ private fun LightWidgetContent(langContext: Context, snapshot: WidgetSnapshot?) 
 
             Spacer(modifier = GlanceModifier.height(10.dp))
 
-            // ⭐ ردیف اول (سه‌تایی)
+            // ⭐ ردیف اول اوقات شرعی (سه‌تایی)
             Row(
                 modifier = GlanceModifier.fillMaxWidth(),
                 horizontalAlignment = Alignment.Horizontal.CenterHorizontally
@@ -110,7 +145,7 @@ private fun LightWidgetContent(langContext: Context, snapshot: WidgetSnapshot?) 
 
             Spacer(modifier = GlanceModifier.height(8.dp))
 
-            // ⭐ ردیف دوم (سه‌تایی)
+            // ⭐ ردیف دوم اوقات شرعی (سه‌تایی)
             Row(
                 modifier = GlanceModifier.fillMaxWidth(),
                 horizontalAlignment = Alignment.Horizontal.CenterHorizontally
