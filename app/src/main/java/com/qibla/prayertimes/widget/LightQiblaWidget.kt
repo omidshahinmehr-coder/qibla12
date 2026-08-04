@@ -73,7 +73,7 @@ private fun LightWidgetContent(langContext: Context, snapshot: WidgetSnapshot?) 
             .background(bgColor)
             .cornerRadius(20.dp)
             .padding(12.dp),
-        clickable(actionStartActivity<MainActivity>()),
+       // clickable(actionStartActivity<MainActivity>()),
         horizontalAlignment = Alignment.Horizontal.CenterHorizontally
     ) {
 
