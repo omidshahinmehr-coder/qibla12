@@ -44,14 +44,25 @@ private fun LightWidgetContent(langContext: Context, snapshot: WidgetSnapshot?) 
 
     val labels = prayerLabels(langContext)
 
-    val jalaliText = snapshot?.jalaliText ?: labels["Updating"] ?: "Updating..."
+    if (snapshot == null) {
+        Text(
+            text = labels["Updating"] ?: "Updating...",
+            style = TextStyle(
+                color = goldText,
+                fontSize = 16.sp,
+                fontWeight = FontWeight.Bold,
+                textAlign = TextAlign.Center
+            )
+        )
+        return
+    }
 
-    val fajr = snapshot?.timings?.get("Fajr") ?: "--:--"
-    val sunrise = snapshot?.timings?.get("Sunrise") ?: "--:--"
-    val dhuhr = snapshot?.timings?.get("Dhuhr") ?: "--:--"
-    val sunset = snapshot?.timings?.get("Sunset") ?: "--:--"
-    val maghrib = snapshot?.timings?.get("Maghrib") ?: "--:--"
-    val midnight = snapshot?.timings?.get("Midnight") ?: "--:--"
+    val fajr = snapshot.timings["Fajr"] ?: "--:--"
+    val sunrise = snapshot.timings["Sunrise"] ?: "--:--"
+    val dhuhr = snapshot.timings["Dhuhr"] ?: "--:--"
+    val sunset = snapshot.timings["Sunset"] ?: "--:--"
+    val maghrib = snapshot.timings["Maghrib"] ?: "--:--"
+    val midnight = snapshot.timings["Midnight"] ?: "--:--"
 
     Column(
         modifier = GlanceModifier
@@ -62,8 +73,9 @@ private fun LightWidgetContent(langContext: Context, snapshot: WidgetSnapshot?) 
         horizontalAlignment = Alignment.Horizontal.CenterHorizontally
     ) {
 
+        // ⭐ تاریخ شمسی
         Text(
-            text = jalaliText,
+            text = snapshot.jalaliText,
             style = TextStyle(
                 color = goldText,
                 fontSize = 20.sp,
@@ -73,6 +85,7 @@ private fun LightWidgetContent(langContext: Context, snapshot: WidgetSnapshot?) 
 
         Spacer(modifier = GlanceModifier.height(10.dp))
 
+        // ⭐ ردیف اول
         Row(
             modifier = GlanceModifier.fillMaxWidth(),
             horizontalAlignment = Alignment.Horizontal.CenterHorizontally
@@ -86,6 +99,7 @@ private fun LightWidgetContent(langContext: Context, snapshot: WidgetSnapshot?) 
 
         Spacer(modifier = GlanceModifier.height(6.dp))
 
+        // ⭐ ردیف دوم
         Row(
             modifier = GlanceModifier.fillMaxWidth(),
             horizontalAlignment = Alignment.Horizontal.CenterHorizontally
