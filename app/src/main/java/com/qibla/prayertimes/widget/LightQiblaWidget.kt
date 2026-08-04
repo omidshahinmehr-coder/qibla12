@@ -70,13 +70,96 @@ private fun LightWidgetContent(langContext: Context, snapshot: WidgetSnapshot?) 
                     textAlign = TextAlign.Center
                 )
             )
-            return
-        }
+        } else {
 
-        // ⭐ ساعت (RemoteViews)
-        Box(
-            modifier = GlanceModifier.fillMaxWidth(),
-            contentAlignment = Alignment.Center
+            // ⭐ ساعت (RemoteViews)
+            Box(
+                modifier = GlanceModifier.fillMaxWidth(),
+                contentAlignment = Alignment.Center
+            ) {
+                AndroidRemoteViews(
+                    RemoteViews(langContext.packageName, R.layout.widget_clock)
+                )
+            }
+
+            Spacer(modifier = GlanceModifier.height(4.dp))
+
+            // ⭐ تاریخ شمسی
+            Text(
+                text = snapshot.jalaliText,
+                style = TextStyle(
+                    color = goldText,
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.Bold
+                )
+            )
+
+            Spacer(modifier = GlanceModifier.height(10.dp))
+
+            // ⭐ ردیف اول (سه‌تایی)
+            Row(
+                modifier = GlanceModifier.fillMaxWidth(),
+                horizontalAlignment = Alignment.Horizontal.CenterHorizontally
+            ) {
+                LightCell(labels["Fajr"] ?: "Fajr", snapshot.timings["Fajr"] ?: "--:--")
+                Spacer(modifier = GlanceModifier.width(4.dp))
+                LightCell(labels["Sunrise"] ?: "Sunrise", snapshot.timings["Sunrise"] ?: "--:--")
+                Spacer(modifier = GlanceModifier.width(4.dp))
+                LightCell(labels["Dhuhr"] ?: "Dhuhr", snapshot.timings["Dhuhr"] ?: "--:--")
+            }
+
+            Spacer(modifier = GlanceModifier.height(8.dp))
+
+            // ⭐ ردیف دوم (سه‌تایی)
+            Row(
+                modifier = GlanceModifier.fillMaxWidth(),
+                horizontalAlignment = Alignment.Horizontal.CenterHorizontally
+            ) {
+                LightCell(labels["Sunset"] ?: "Sunset", snapshot.timings["Sunset"] ?: "--:--")
+                Spacer(modifier = GlanceModifier.width(4.dp))
+                LightCell(labels["Maghrib"] ?: "Maghrib", snapshot.timings["Maghrib"] ?: "--:--")
+                Spacer(modifier = GlanceModifier.width(4.dp))
+                LightCell(labels["Midnight"] ?: "Midnight", snapshot.timings["Midnight"] ?: "--:--")
+            }
+        }
+    }
+}
+
+@Composable
+private fun LightCell(label: String, time: String) {
+    Column(
+        modifier = GlanceModifier
+            .width(cellWidth)
+            .background(cellBorderColor)
+            .cornerRadius(10.dp)
+            .padding(1.dp)
+    ) {
+        Column(
+            modifier = GlanceModifier
+                .fillMaxWidth()
+                .height(cellHeight)
+                .background(cellFillColor)
+                .cornerRadius(8.dp)
+                .padding(4.dp),
+            horizontalAlignment = Alignment.Horizontal.CenterHorizontally
         ) {
-            AndroidRemoteViews(
-                RemoteViews(langContext.packageName, R.layout.widget_clock)
+            Text(
+                text = label,
+                style = TextStyle(
+                    color = goldText,
+                    fontSize = 11.sp,
+                    fontWeight = FontWeight.Bold
+                )
+            )
+            Spacer(modifier = GlanceModifier.height(1.dp))
+            Text(
+                text = time,
+                style = TextStyle(
+                    color = goldText,
+                    fontSize = 15.sp,
+                    fontWeight = FontWeight.Bold
+                )
+            )
+        }
+    }
+}
