@@ -30,9 +30,7 @@ private val cellHeight = 50.dp
 class LightQiblaWidget : GlanceAppWidget() {
     override suspend fun provideGlance(context: Context, id: androidx.glance.GlanceId) {
 
-        // ⭐ مهم‌ترین بخش: ویجت سبک هم باید Locale را wrap کند
         val localizedContext = LocalePrefs.wrap(context)
-
         val snapshot = WidgetDataStore(context).load()
 
         provideContent {
@@ -44,18 +42,9 @@ class LightQiblaWidget : GlanceAppWidget() {
 @Composable
 private fun LightWidgetContent(langContext: Context, snapshot: WidgetSnapshot?) {
 
-    // ⭐ تشخیص زبان فعلی
-    val config = langContext.resources.configuration
-    val language =
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
-            config.locales[0].language
-        else
-            config.locale.language
-
-    // ⭐ گرفتن لیبل‌ها بر اساس زبان (مثل ویجت اصلی)
     val labels = prayerLabels(langContext)
 
-    val jalaliText = snapshot?.jalaliText ?: langContext.getString(R.string.widget_updating)
+    val jalaliText = snapshot?.jalaliText ?: labels["Updating"] ?: "Updating..."
 
     val fajr = snapshot?.timings?.get("Fajr") ?: "--:--"
     val sunrise = snapshot?.timings?.get("Sunrise") ?: "--:--"
@@ -73,7 +62,6 @@ private fun LightWidgetContent(langContext: Context, snapshot: WidgetSnapshot?) 
         horizontalAlignment = Alignment.Horizontal.CenterHorizontally
     ) {
 
-        // ⭐ تاریخ شمسی
         Text(
             text = jalaliText,
             style = TextStyle(
@@ -85,7 +73,6 @@ private fun LightWidgetContent(langContext: Context, snapshot: WidgetSnapshot?) 
 
         Spacer(modifier = GlanceModifier.height(10.dp))
 
-        // ⭐ ردیف اول
         Row(
             modifier = GlanceModifier.fillMaxWidth(),
             horizontalAlignment = Alignment.Horizontal.CenterHorizontally
@@ -99,7 +86,6 @@ private fun LightWidgetContent(langContext: Context, snapshot: WidgetSnapshot?) 
 
         Spacer(modifier = GlanceModifier.height(6.dp))
 
-        // ⭐ ردیف دوم
         Row(
             modifier = GlanceModifier.fillMaxWidth(),
             horizontalAlignment = Alignment.Horizontal.CenterHorizontally
