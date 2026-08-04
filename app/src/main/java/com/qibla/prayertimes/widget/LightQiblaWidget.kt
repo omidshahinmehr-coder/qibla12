@@ -1,6 +1,7 @@
 package com.qibla.prayertimes.widget
 
 import android.content.Context
+import android.os.Build
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
@@ -16,6 +17,7 @@ import androidx.glance.unit.ColorProvider
 import com.qibla.prayertimes.data.WidgetDataStore
 import com.qibla.prayertimes.data.WidgetSnapshot
 import com.qibla.prayertimes.util.LocalePrefs
+import com.qibla.prayertimes.data.prayerLabels
 
 private val bgColor = ColorProvider(Color(0xFFF3ECDD))
 private val goldText = ColorProvider(Color(0xFF8A6A2E))
@@ -42,8 +44,19 @@ class LightQiblaWidget : GlanceAppWidget() {
 @Composable
 private fun LightWidgetContent(langContext: Context, snapshot: WidgetSnapshot?) {
 
-    // ⭐ تمام متن‌ها باید از langContext گرفته شوند
+    // ⭐ تشخیص زبان فعلی
+    val config = langContext.resources.configuration
+    val language =
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
+            config.locales[0].language
+        else
+            config.locale.language
+
+    // ⭐ گرفتن لیبل‌ها بر اساس زبان (مثل ویجت اصلی)
+    val labels = prayerLabels(langContext)
+
     val jalaliText = snapshot?.jalaliText ?: langContext.getString(R.string.widget_updating)
+
     val fajr = snapshot?.timings?.get("Fajr") ?: "--:--"
     val sunrise = snapshot?.timings?.get("Sunrise") ?: "--:--"
     val dhuhr = snapshot?.timings?.get("Dhuhr") ?: "--:--"
@@ -77,11 +90,11 @@ private fun LightWidgetContent(langContext: Context, snapshot: WidgetSnapshot?) 
             modifier = GlanceModifier.fillMaxWidth(),
             horizontalAlignment = Alignment.Horizontal.CenterHorizontally
         ) {
-            LightCell(langContext.getString(R.string.prayer_fajr), fajr)
+            LightCell(labels["Fajr"] ?: "Fajr", fajr)
             Spacer(modifier = GlanceModifier.width(4.dp))
-            LightCell(langContext.getString(R.string.prayer_sunrise), sunrise)
+            LightCell(labels["Sunrise"] ?: "Sunrise", sunrise)
             Spacer(modifier = GlanceModifier.width(4.dp))
-            LightCell(langContext.getString(R.string.prayer_dhuhr), dhuhr)
+            LightCell(labels["Dhuhr"] ?: "Dhuhr", dhuhr)
         }
 
         Spacer(modifier = GlanceModifier.height(6.dp))
@@ -91,11 +104,11 @@ private fun LightWidgetContent(langContext: Context, snapshot: WidgetSnapshot?) 
             modifier = GlanceModifier.fillMaxWidth(),
             horizontalAlignment = Alignment.Horizontal.CenterHorizontally
         ) {
-            LightCell(langContext.getString(R.string.prayer_sunset), sunset)
+            LightCell(labels["Sunset"] ?: "Sunset", sunset)
             Spacer(modifier = GlanceModifier.width(4.dp))
-            LightCell(langContext.getString(R.string.prayer_maghrib), maghrib)
+            LightCell(labels["Maghrib"] ?: "Maghrib", maghrib)
             Spacer(modifier = GlanceModifier.width(4.dp))
-            LightCell(langContext.getString(R.string.prayer_midnight), midnight)
+            LightCell(labels["Midnight"] ?: "Midnight", midnight)
         }
     }
 }
