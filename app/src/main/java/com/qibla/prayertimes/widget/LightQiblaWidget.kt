@@ -1,6 +1,7 @@
 package com.qibla.prayertimes.widget
 
 import android.content.Context
+import android.os.Build
 import android.widget.RemoteViews
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
@@ -26,6 +27,9 @@ import com.qibla.prayertimes.data.WidgetDataStore
 import com.qibla.prayertimes.data.WidgetSnapshot
 import com.qibla.prayertimes.data.prayerLabels
 import com.qibla.prayertimes.util.LocalePrefs
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Locale
 
 private val bgColor = ColorProvider(Color(0xFFF3ECDD))
 private val goldText = ColorProvider(Color(0xFF8A6A2E))
@@ -121,48 +125,27 @@ private fun LightWidgetContent(langContext: Context, snapshot: WidgetSnapshot?) 
 
             Spacer(modifier = GlanceModifier.height(1.dp))
 
-            // ⭐ تاریخ شمسی
-          //  Text(
-              //  text = snapshot.jalaliText,
-             //   style = TextStyle(
-             //       color = goldText,
-            //        fontSize = 20.sp,
-             //       fontWeight = FontWeight.Bold
-             //   )
-          //  )
-          val config = langContext.resources.configuration
-val language =
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
-        config.locales[0].language
-    else
-        config.locale.language
+            // ⭐ تاریخ + نام روز
+            val config = langContext.resources.configuration
+            val language =
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
+                    config.locales[0].language
+                else
+                    config.locale.language
 
-val weekday = weekdayName(language)
-val jalaliFull = "$weekday ${snapshot.jalaliText}"
+            val weekday = weekdayName(language)
+            val jalaliFull = "$weekday ${snapshot.jalaliText}"
 
-Text(
-    text = jalaliFull,
-    style = TextStyle(
-        color = goldText,
-        fontSize = 18.sp,
-        fontWeight = FontWeight.Bold,
-        textAlign = TextAlign.Center
-    ),
-    maxLines = 1
-)
-          val weekday = weekdayName(language)
-val jalaliFull = "$weekday ${snapshot.jalaliText}"
-
-Text(
-    text = jalaliFull,
-    style = TextStyle(
-        color = goldText,
-        fontSize = 18.sp,
-        fontWeight = FontWeight.Bold,
-        textAlign = TextAlign.Center
-    ),
-    maxLines = 1
-)
+            Text(
+                text = jalaliFull,
+                style = TextStyle(
+                    color = goldText,
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.Bold,
+                    textAlign = TextAlign.Center
+                ),
+                maxLines = 1
+            )
 
             Spacer(modifier = GlanceModifier.height(2.dp))
 
@@ -231,13 +214,15 @@ private fun LightCell(label: String, time: String) {
                 )
             )
         }
-        private fun weekdayName(language: String): String {
+    }
+}
+
+// ⭐ تابع نام روز (بیرون از Composable)
+private fun weekdayName(language: String): String {
     val dow = Calendar.getInstance().get(Calendar.DAY_OF_WEEK)
     return when (language) {
         "fa" -> arrayOf("یکشنبه","دوشنبه","سه‌شنبه","چهارشنبه","پنجشنبه","جمعه","شنبه")[dow - 1]
         "ar" -> arrayOf("الأحد","الاثنين","الثلاثاء","الأربعاء","الخميس","الجمعة","السبت")[dow - 1]
         else -> SimpleDateFormat("EEEE", Locale.ENGLISH).format(Calendar.getInstance().time)
-    }
-        }
     }
 }
