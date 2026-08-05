@@ -122,14 +122,27 @@ private fun LightWidgetContent(langContext: Context, snapshot: WidgetSnapshot?) 
             Spacer(modifier = GlanceModifier.height(1.dp))
 
             // ⭐ تاریخ شمسی
-            Text(
-                text = snapshot.jalaliText,
-                style = TextStyle(
-                    color = goldText,
-                    fontSize = 20.sp,
-                    fontWeight = FontWeight.Bold
-                )
-            )
+          //  Text(
+              //  text = snapshot.jalaliText,
+             //   style = TextStyle(
+             //       color = goldText,
+            //        fontSize = 20.sp,
+             //       fontWeight = FontWeight.Bold
+             //   )
+          //  )
+          val weekday = weekdayName(language)
+val jalaliFull = "$weekday ${snapshot.jalaliText}"
+
+Text(
+    text = jalaliFull,
+    style = TextStyle(
+        color = goldText,
+        fontSize = 18.sp,
+        fontWeight = FontWeight.Bold,
+        textAlign = TextAlign.Center
+    ),
+    maxLines = 1
+)
 
             Spacer(modifier = GlanceModifier.height(2.dp))
 
