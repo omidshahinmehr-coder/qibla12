@@ -325,7 +325,7 @@ private fun weekdayName(language: String): String {
     }
 }
 
-private fun formatGregorian(context: Context, dateKey: String): String {
+/*private fun formatGregorian(context: Context, dateKey: String): String {
     return try {
         val parts = dateKey.split("-").map { it.toInt() }
         val cal = Calendar.getInstance().apply { set(parts[0], parts[1] - 1, parts[2]) }
@@ -338,6 +338,38 @@ private fun formatGregorian(context: Context, dateKey: String): String {
                 config.locale
 
         SimpleDateFormat("dd MMMM yyyy", locale).format(cal.time)
+    } catch (e: Exception) {
+        dateKey
+    }
+}*/
+private fun formatGregorianSafe(dateKey: String): String {
+    return try {
+        val parts = dateKey.split("-").map { it.toInt() }
+        val cal = Calendar.getInstance().apply {
+            set(parts[0], parts[1] - 1, parts[2])
+        }
+
+        val day = parts[2]
+        val year = parts[0]
+
+        val monthFa = when (cal.get(Calendar.MONTH)) {
+            0 -> "ژانویه"
+            1 -> "فوریه"
+            2 -> "مارس"
+            3 -> "آوریل"
+            4 -> "مه"
+            5 -> "ژوئن"
+            6 -> "ژوئیه"
+            7 -> "اوت"
+            8 -> "سپتامبر"
+            9 -> "اکتبر"
+            10 -> "نوامبر"
+            11 -> "دسامبر"
+            else -> ""
+        }
+
+        "$day $monthFa $year"
+
     } catch (e: Exception) {
         dateKey
     }
