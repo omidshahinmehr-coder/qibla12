@@ -182,7 +182,7 @@ private fun WidgetContent(langContext: Context, snapshot: WidgetSnapshot?) {
                 }
             }
 
-            Spacer(modifier = GlanceModifier.height(2.dp))
+            Spacer(modifier = GlanceModifier.height(1.dp))
 
             Box(
                 modifier = GlanceModifier.fillMaxWidth(),
@@ -191,7 +191,7 @@ private fun WidgetContent(langContext: Context, snapshot: WidgetSnapshot?) {
                 jalaliBlock()
             }
 
-            Spacer(modifier = GlanceModifier.height(2.dp))
+            Spacer(modifier = GlanceModifier.height(1.dp))
 
             Row(
                 modifier = GlanceModifier.fillMaxWidth(),
@@ -226,7 +226,7 @@ private fun WidgetContent(langContext: Context, snapshot: WidgetSnapshot?) {
                 )
             }
 
-            Spacer(modifier = GlanceModifier.height(2.dp))
+            Spacer(modifier = GlanceModifier.height(1.dp))
 
             Box(
                 modifier = GlanceModifier.fillMaxWidth(),
@@ -241,7 +241,7 @@ private fun WidgetContent(langContext: Context, snapshot: WidgetSnapshot?) {
                 }
             }
 
-            Spacer(modifier = GlanceModifier.height(2.dp))
+            Spacer(modifier = GlanceModifier.height(1.dp))
 
             Row(
                 modifier = GlanceModifier.fillMaxWidth(),
@@ -262,7 +262,7 @@ private fun WidgetContent(langContext: Context, snapshot: WidgetSnapshot?) {
                     textAlign = TextAlign.Center
                 )
             )
-            Spacer(modifier = GlanceModifier.height(6.dp))
+            Spacer(modifier = GlanceModifier.height(2.dp))
             Text(
                 text = langContext.getString(R.string.widget_open_app_hint),
                 style = TextStyle(
@@ -302,7 +302,7 @@ private fun PrayerCell(label: String, time: String) {
                     textAlign = TextAlign.Center
                 )
             )
-            Spacer(modifier = GlanceModifier.height(1.dp))
+            Spacer(modifier = GlanceModifier.height(0.dp))
             Text(
                 text = time,
                 style = TextStyle(
