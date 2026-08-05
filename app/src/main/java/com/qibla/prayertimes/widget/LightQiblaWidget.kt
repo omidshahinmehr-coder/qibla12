@@ -119,7 +119,7 @@ private fun LightWidgetContent(langContext: Context, snapshot: WidgetSnapshot?) 
                 }
             }
 
-            Spacer(modifier = GlanceModifier.height(6.dp))
+            Spacer(modifier = GlanceModifier.height(1.dp))
 
             // ⭐ تاریخ شمسی
             Text(
@@ -131,7 +131,7 @@ private fun LightWidgetContent(langContext: Context, snapshot: WidgetSnapshot?) 
                 )
             )
 
-            Spacer(modifier = GlanceModifier.height(10.dp))
+            Spacer(modifier = GlanceModifier.height(2.dp))
 
             // ⭐ ردیف اول اوقات شرعی (سه‌تایی)
             Row(
@@ -145,7 +145,7 @@ private fun LightWidgetContent(langContext: Context, snapshot: WidgetSnapshot?) 
                 LightCell(labels["Dhuhr"] ?: "Dhuhr", snapshot.timings["Dhuhr"] ?: "--:--")
             }
 
-            Spacer(modifier = GlanceModifier.height(8.dp))
+            Spacer(modifier = GlanceModifier.height(4.dp))
 
             // ⭐ ردیف دوم اوقات شرعی (سه‌تایی)
             Row(
@@ -188,7 +188,7 @@ private fun LightCell(label: String, time: String) {
                     fontWeight = FontWeight.Bold
                 )
             )
-            Spacer(modifier = GlanceModifier.height(1.dp))
+            Spacer(modifier = GlanceModifier.height(0.dp))
             Text(
                 text = time,
                 style = TextStyle(
