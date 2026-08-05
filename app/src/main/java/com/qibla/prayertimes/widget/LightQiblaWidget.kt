@@ -130,6 +130,26 @@ private fun LightWidgetContent(langContext: Context, snapshot: WidgetSnapshot?) 
              //       fontWeight = FontWeight.Bold
              //   )
           //  )
+          val config = langContext.resources.configuration
+val language =
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
+        config.locales[0].language
+    else
+        config.locale.language
+
+val weekday = weekdayName(language)
+val jalaliFull = "$weekday ${snapshot.jalaliText}"
+
+Text(
+    text = jalaliFull,
+    style = TextStyle(
+        color = goldText,
+        fontSize = 18.sp,
+        fontWeight = FontWeight.Bold,
+        textAlign = TextAlign.Center
+    ),
+    maxLines = 1
+)
           val weekday = weekdayName(language)
 val jalaliFull = "$weekday ${snapshot.jalaliText}"
 
@@ -210,6 +230,14 @@ private fun LightCell(label: String, time: String) {
                     fontWeight = FontWeight.Bold
                 )
             )
+        }
+        private fun weekdayName(language: String): String {
+    val dow = Calendar.getInstance().get(Calendar.DAY_OF_WEEK)
+    return when (language) {
+        "fa" -> arrayOf("یکشنبه","دوشنبه","سه‌شنبه","چهارشنبه","پنجشنبه","جمعه","شنبه")[dow - 1]
+        "ar" -> arrayOf("الأحد","الاثنين","الثلاثاء","الأربعاء","الخميس","الجمعة","السبت")[dow - 1]
+        else -> SimpleDateFormat("EEEE", Locale.ENGLISH).format(Calendar.getInstance().time)
+    }
         }
     }
 }
