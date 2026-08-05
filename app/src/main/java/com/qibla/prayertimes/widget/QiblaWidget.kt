@@ -325,7 +325,7 @@ private fun weekdayName(language: String): String {
     }
 }
 
-/*private fun formatGregorian(context: Context, dateKey: String): String {
+private fun formatGregorian(context: Context, dateKey: String): String {
     return try {
         val parts = dateKey.split("-").map { it.toInt() }
         val cal = Calendar.getInstance().apply { set(parts[0], parts[1] - 1, parts[2]) }
@@ -341,8 +341,8 @@ private fun weekdayName(language: String): String {
     } catch (e: Exception) {
         dateKey
     }
-}*/
-private fun formatGregorianSafe(dateKey: String): String {
+}
+/*private fun formatGregorianSafe(dateKey: String): String {
     return try {
         val parts = dateKey.split("-").map { it.toInt() }
         val cal = Calendar.getInstance().apply {
@@ -373,7 +373,7 @@ private fun formatGregorianSafe(dateKey: String): String {
     } catch (e: Exception) {
         dateKey
     }
-}
+}*/
 
 private fun staticDuration(targetMillis: Long): String {
     val diff = (targetMillis - System.currentTimeMillis()).coerceAtLeast(0) / 1000
