@@ -8,5 +8,4 @@
     android:initialLayout="@layout/widget_light_placeholder"
     android:previewImage="@drawable/widget_light_preview"
     android:resizeMode="horizontal|vertical"
-    android:widgetCategory="home_screen"
-    android:previewImage="@mipmap/ic_launcher" />
+    android:widgetCategory="home_screen" />
